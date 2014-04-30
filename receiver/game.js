@@ -14,7 +14,7 @@ $(document).ready(function() {
 function makeMaze() {
   var rows = 25;
   var columns = 25;
-  var gridsize = 30;
+  var gridsize = 25;
   var mazeStyle = "straight";
   /*
    var startColumn = $('#startX').val();
