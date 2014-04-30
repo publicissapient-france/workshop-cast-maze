@@ -4,7 +4,7 @@
     <string name="app_name">android</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="app_id"></string>
+    <string name="app_id">8D7FEAA1</string>
     <string name="namespace">urn:x-cast:fr.xebia.workshop.cast.maze</string>
     <string name="media_route_menu_title">Cast</string>
 

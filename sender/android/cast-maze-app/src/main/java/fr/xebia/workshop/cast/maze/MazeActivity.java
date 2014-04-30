@@ -1,8 +1,8 @@
 package fr.xebia.workshop.cast.maze;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
@@ -24,7 +24,7 @@ import com.google.android.gms.common.api.Status;
 import java.io.IOException;
 
 
-public class MazeActivity extends Activity {
+public class MazeActivity extends ActionBarActivity {
 
     private static final String TAG = MazeActivity.class.getSimpleName();
 
