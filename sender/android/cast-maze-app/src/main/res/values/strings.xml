@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="app_id"></string>
-    <string name="namespace">urn:x-cast:fr.xebia.workshop.cast.labyrinth</string>
+    <string name="namespace">urn:x-cast:fr.xebia.workshop.cast.maze</string>
     <string name="media_route_menu_title">Cast</string>
 
 </resources>
