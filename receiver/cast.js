@@ -33,7 +33,7 @@ $(document).ready(function () {
   // create a CastMessageBus to handle messages for a custom namespace
   window.messageBus =
     window.castReceiverManager.getCastMessageBus(
-      'urn:x-cast:fr.xebia.workshop.cast.labyrinth');
+      'urn:x-cast:fr.xebia.workshop.cast.maze');
 
   // handler for the CastMessageBus message event
   window.messageBus.onMessage = function (event) {
