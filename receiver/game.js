@@ -1,6 +1,9 @@
 var canvas;
 var context;
 var theMaze = null;
+var colors = ['#0099CC', '#9933CC', '#669900', '#FF8A00', '#CC0000', '#33B5E5', '#AA66CC', '#99CC00', '#FFBB33', '#FF4444', '#A8DFF4',
+    '#DDBCEE', '#D3E992', '#FFE3A0', '#FFCACA', '#00008B', '#008B8B', '#B8860B', '#A9A9A9', '#006400', '#BDB76B', '#8B008B', '#556B2F',
+    '#FF8C00', '#8B0000', '#E9967A', '#8FBC8F'];
 
 $(document).ready(function () {
     canvas = document.getElementById('maze');
@@ -54,9 +57,10 @@ function addPlayer(playerId) {
     theMaze.players[playerId] = {
         x: theMaze.startColumn,
         y: theMaze.startRow,
-        color: '#2C2C2C'
+        color: colors[theMaze.playersCount % colors.length]
     };
-    theMaze.drawPlayer(theMaze.players[playerId]);
+    theMaze.playersCount++;
+    theMaze.drawPlayers(theMaze.players[playerId]);
 }
 
 function removePlayer(playerId) {
@@ -64,7 +68,11 @@ function removePlayer(playerId) {
     // TODO: clear maze
 }
 
-function handleKeypress(direction, player) {
+function handleKeypress(direction, playerId) {
+    var player = theMaze.players[playerId];
+    if (!player) {
+        return;
+    }
     var currentPlayerGrid = theMaze.grid[player.x][player.y];
     var isMoving = false;
     var changeX = 0;
@@ -117,7 +125,7 @@ function handleKeypress(direction, player) {
         theMaze.redrawCell(theMaze.grid[player.x][player.y]);
         player.x += changeX;
         player.y += changeY;
-        theMaze.drawPlayer(player);
+        theMaze.drawPlayers(player);
     }
 };
 
@@ -134,6 +142,7 @@ function maze(rows, columns, gridsize, mazeStyle, startColumn, startRow, endColu
     this.startColumn = parseInt(startColumn);
     this.startRow = parseInt(startRow);
     this.players = [];
+    this.playersCount = 0;
     this.endColumn = parseInt(endColumn);
     this.endRow = parseInt(endRow);
     this.wallColor = wallColor;
@@ -468,7 +477,7 @@ maze.prototype.draw = function () {
 
         }
     }
-    this.drawPlayer();
+    this.drawPlayers();
 };
 
 maze.prototype.redrawCell = function (theCell) {
@@ -517,14 +526,17 @@ maze.prototype.redrawCell = function (theCell) {
     context.stroke();
 };
 
-maze.prototype.drawPlayer = function (player) {
-    var drawX = player.x * this.gridsize + (this.gridsize / 2);
-    var drawY = player.y * this.gridsize + (this.gridsize / 2);
-    context.fillStyle = "#000000";
-    context.beginPath();
-    context.arc(drawX, drawY, (this.gridsize / 4), 0, Math.PI * 2, true);
-    context.closePath();
-    context.fill();
+maze.prototype.drawPlayers = function () {
+    for (var id in theMaze.players) {
+        var player = theMaze.players[id];
+        var drawX = player.x * this.gridsize + (this.gridsize / 2);
+        var drawY = player.y * this.gridsize + (this.gridsize / 2);
+        context.fillStyle = player.color;
+        context.beginPath();
+        context.arc(drawX, drawY, (this.gridsize / 4), 0, Math.PI * 2, true);
+        context.closePath();
+        context.fill();
+    }
 };
 
 function cell(column, row, partOfMaze, isStart, isEnd, isGenStart) {
