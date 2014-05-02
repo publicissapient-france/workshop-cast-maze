@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Chromecast Maze Client</title>
+    <link rel="stylesheet" type="text/css" href="app.css">
+</head>
+<body>
+<button onclick="launchApp()">Launch app</button>
+<div id="pad">
+    <button onclick="go('up')">Up</button>
+    <div>
+        <button onclick="go('left')">Left</button>
+        <button onclick="go('right')">Right</button>
+    </div>
+    <button onclick="go('down')">Down</button>
+</div>
+<div id="cast-icon"></div>
+<div id="debug"></div>
+<script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+<script src="app.js" type="application/javascript"></script>
+</body>
+</html>
