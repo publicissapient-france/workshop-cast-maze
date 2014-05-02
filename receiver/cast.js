@@ -14,6 +14,7 @@ $(document).ready(function () {
   castReceiverManager.onSenderConnected = function (event) {
     console.log('Received Sender Connected event: ' + event.data);
     console.log(window.castReceiverManager.getSender(event.data).userAgent);
+      addPlayer(event.senderId);
   };
 
   // handler for 'senderdisconnected' event
@@ -22,6 +23,7 @@ $(document).ready(function () {
     if (window.castReceiverManager.getSenders().length == 0) {
       window.close();
     }
+    removePlayer(event.senderId);
   };
 
   // handler for 'systemvolumechanged' event
@@ -39,7 +41,7 @@ $(document).ready(function () {
   window.messageBus.onMessage = function (event) {
     console.log('Message [' + event.senderId + ']: ' + event.data);
     // display the message from the sender
-    handleKeypress(event.data);
+    handleKeypress(event.data, event.senderId);
     // inform all senders on the CastMessageBus of the incoming message event
     // sender message listener will be invoked
     window.messageBus.send(event.senderId, event.data);
