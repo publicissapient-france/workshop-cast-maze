@@ -3,3 +3,4 @@
 /.idea/workspace.xml
 .DS_Store
 /sender/js/node_modules
+/receiver/node_modules

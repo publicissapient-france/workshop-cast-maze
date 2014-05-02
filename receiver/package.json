@@ -1,5 +1,11 @@
 {
+    "name": "cast-maze-receiver",
+    "version": "0.0.0",
     "dependencies": {
-        "connect": "2.14.5"
+        "grunt": "~0.4.4",
+        "connect": "2.14.5",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-gh-pages": "~0.9.1",
+        "grunt-contrib-clean": "~0.4.0"
     }
 }
