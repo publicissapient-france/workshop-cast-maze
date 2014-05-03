@@ -1,6 +1,6 @@
 .gradle
-/local.properties
-/.idea/workspace.xml
+.idea/workspace.xml
 .DS_Store
-/sender/js/node_modules
-/receiver/node_modules
+node_modules
+dist
+.grunt

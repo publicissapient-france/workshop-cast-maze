@@ -1,7 +1,0 @@
-{
-    "name": "cast-maze-sender-js",
-    "version": "0.0.0",
-    "dependencies": {
-        "connect": "2.14.5"
-    }
-}
