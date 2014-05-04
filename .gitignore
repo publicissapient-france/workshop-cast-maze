@@ -5,3 +5,6 @@ node_modules
 dist
 .grunt
 _site
+*.pbxuser
+xcuserdata
+*.xccheckout
