@@ -1,5 +1,8 @@
 # Workshop Cast Maze
 
+## Asset
+
+
 ## How To
 
 ### Receiver
@@ -8,7 +11,7 @@ Browse
 
     http://xebia-france.github.io/workshop-cast-maze/receiver/
 
-Deploy
+Deploy on Chrome store
     
     $ grunt dist
     $ grunt gh-pages
@@ -19,8 +22,18 @@ Deploy
 
 Root folder
 
-    $ sender/js
+    sender/js
 Start NodeJS
 
     $ node server.js
+### Workshop
 
+Root folder
+
+    workshop
+Start [Jekyll](http://jekyllrb.com) in development mode
+
+    $ jekyll serve -w
+Deploy on gh-pages
+
+    $ cd workshop/ && jekyll build && grunt gh-pages
