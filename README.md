@@ -38,4 +38,4 @@ Start [Jekyll](http://jekyllrb.com) in development mode
     $ jekyll serve -w
 Deploy on gh-pages
 
-    $ cd workshop/ && jekyll build && grunt gh-pages
+    $ cd workshop/ && grunt dist gh-pages
