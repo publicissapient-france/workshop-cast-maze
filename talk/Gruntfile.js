@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         copy: {
             main: {
-                src: ['cast.js', 'game.js', 'index.html', 'jquery-1.11.0.min.js'], dest: 'dist/receiver/', filter: 'isFile'
+                src: ['css/**', 'js/*', 'lib/**', 'plugin/**', 'index.html'], dest: 'dist/talk/', filter: 'isFile'
             }
         },
         'gh-pages': {
