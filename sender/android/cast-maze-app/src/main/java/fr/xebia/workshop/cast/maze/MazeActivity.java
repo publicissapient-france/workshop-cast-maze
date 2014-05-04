@@ -34,9 +34,6 @@ public class MazeActivity extends ActionBarActivity {
     private MediaRouter.Callback mMediaRouterCallback;
     private CastDevice mSelectedDevice;
     private GoogleApiClient mApiClient;
-    private Cast.Listener mCastListener;
-    private GoogleApiClient.ConnectionCallbacks mConnectionCallbacks;
-    private ConnectionFailedListener mConnectionFailedListener;
     private GameChannel mGameChannel;
     private boolean mApplicationStarted;
     private boolean mWaitingForReconnect;
@@ -57,13 +54,6 @@ public class MazeActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        // Start media router discovery
-        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.maze, menu);
@@ -72,6 +62,13 @@ public class MazeActivity extends ActionBarActivity {
         // Set the MediaRouteActionProvider selector for device discovery.
         mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Start media router discovery
+        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
     }
 
     /**
@@ -84,7 +81,6 @@ public class MazeActivity extends ActionBarActivity {
             Log.d(TAG, "onRouteSelected");
             // Handle the user route selection.
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
-
             launchReceiver();
         }
 
@@ -101,24 +97,21 @@ public class MazeActivity extends ActionBarActivity {
      */
     private void launchReceiver() {
         try {
-            mCastListener = new Cast.Listener() {
-
-                @Override
-                public void onApplicationDisconnected(int errorCode) {
-                    Log.d(TAG, "application has stopped");
-                    teardown();
-                }
-
-            };
             // Connect to Google Play services
-            mConnectionCallbacks = new ConnectionCallbacks();
-            mConnectionFailedListener = new ConnectionFailedListener();
             Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
-                    .builder(mSelectedDevice, mCastListener);
+                    .builder(mSelectedDevice, new Cast.Listener() {
+
+                        @Override
+                        public void onApplicationDisconnected(int errorCode) {
+                            Log.d(TAG, "application has stopped");
+                            teardown();
+                        }
+
+                    });
             mApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Cast.API, apiOptionsBuilder.build())
-                    .addConnectionCallbacks(mConnectionCallbacks)
-                    .addOnConnectionFailedListener(mConnectionFailedListener)
+                    .addConnectionCallbacks(new ConnectionCallbacks())
+                    .addOnConnectionFailedListener(new ConnectionFailedListener())
                     .build();
 
             mApiClient.connect();
@@ -147,9 +140,7 @@ public class MazeActivity extends ActionBarActivity {
                     mWaitingForReconnect = false;
 
                     // Check if the receiver app is still running
-                    if ((connectionHint != null)
-                            && connectionHint
-                            .getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
+                    if ((connectionHint != null) && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
                         Log.d(TAG, "App  is no longer running");
                         teardown();
                     } else {
@@ -165,66 +156,8 @@ public class MazeActivity extends ActionBarActivity {
                     }
                 } else {
                     // Launch the receiver app
-                    Cast.CastApi
-                            .launchApplication(mApiClient,
-                                    getString(R.string.app_id), false)
-                            .setResultCallback(
-                                    new ResultCallback<Cast.ApplicationConnectionResult>() {
-                                        @Override
-                                        public void onResult(
-                                                Cast.ApplicationConnectionResult result) {
-                                            Status status = result.getStatus();
-                                            Log.d(TAG,
-                                                    "ApplicationConnectionResultCallback.onResult: statusCode"
-                                                            + status.getStatusCode()
-                                            );
-                                            if (status.isSuccess()) {
-                                                ApplicationMetadata applicationMetadata = result
-                                                        .getApplicationMetadata();
-                                                mSessionId = result
-                                                        .getSessionId();
-                                                String applicationStatus = result
-                                                        .getApplicationStatus();
-                                                boolean wasLaunched = result
-                                                        .getWasLaunched();
-                                                Log.d(TAG,
-                                                        "application name: "
-                                                                + applicationMetadata
-                                                                .getName()
-                                                                + ", status: "
-                                                                + applicationStatus
-                                                                + ", sessionId: "
-                                                                + mSessionId
-                                                                + ", wasLaunched: "
-                                                                + wasLaunched
-                                                );
-                                                mApplicationStarted = true;
-
-                                                // Create the custom message
-                                                // channel
-                                                mGameChannel = new GameChannel();
-                                                try {
-                                                    Cast.CastApi
-                                                            .setMessageReceivedCallbacks(
-                                                                    mApiClient,
-                                                                    mGameChannel
-                                                                            .getNamespace(),
-                                                                    mGameChannel
-                                                            );
-                                                } catch (IOException e) {
-                                                    Log.e(TAG,
-                                                            "Exception while creating channel",
-                                                            e);
-                                                }
-                                                // Show button
-                                            } else {
-                                                Log.e(TAG,
-                                                        "application could not launch");
-                                                teardown();
-                                            }
-                                        }
-                                    }
-                            );
+                    Cast.CastApi.launchApplication(mApiClient, getString(R.string.app_id), false)
+                            .setResultCallback(new CastConnectionResultCallback());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Failed to launch application", e);
@@ -250,35 +183,62 @@ public class MazeActivity extends ActionBarActivity {
         }
     }
 
+    class CastConnectionResultCallback implements ResultCallback<Cast.ApplicationConnectionResult> {
+        @Override
+        public void onResult(Cast.ApplicationConnectionResult result) {
+            Status status = result.getStatus();
+            Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + status.getStatusCode());
+            if (status.isSuccess()) {
+                ApplicationMetadata applicationMetadata = result
+                        .getApplicationMetadata();
+                mSessionId = result.getSessionId();
+                String applicationStatus = result.getApplicationStatus();
+                boolean wasLaunched = result.getWasLaunched();
+                Log.d(TAG, "application name: " + applicationMetadata.getName() + ", status: " + applicationStatus + ", " +
+                        "sessionId: " + mSessionId + ", wasLaunched: " + wasLaunched);
+                mApplicationStarted = true;
+
+                // Create the custom message
+                // channel
+                mGameChannel = new GameChannel();
+                try {
+                    Cast.CastApi.setMessageReceivedCallbacks(mApiClient, mGameChannel.getNamespace(), mGameChannel);
+                } catch (IOException e) {
+                    Log.e(TAG,"Exception while creating channel",  e);
+                }
+                // Show button
+            } else {
+                Log.e(TAG,"application could not launch");
+                teardown();
+            }
+        }
+    }
+
     /**
      * Tear down the connection to the receiver
      */
     private void teardown() {
         Log.d(TAG, "teardown");
-        if (mApiClient != null) {
-            if (mApplicationStarted) {
-                if (mApiClient.isConnected()) {
-                    try {
-                        Cast.CastApi.stopApplication(mApiClient, mSessionId);
-                        if (mGameChannel != null) {
-                            Cast.CastApi.removeMessageReceivedCallbacks(
-                                    mApiClient,
-                                    mGameChannel.getNamespace());
-                            mGameChannel = null;
-                        }
-                    } catch (IOException e) {
-                        Log.e(TAG, "Exception while removing channel", e);
-                    }
-                    mApiClient.disconnect();
+        if (mApiClient != null && mApplicationStarted && mApiClient.isConnected()) {
+            try {
+                Cast.CastApi.stopApplication(mApiClient, mSessionId);
+                if (mGameChannel != null) {
+                    Cast.CastApi.removeMessageReceivedCallbacks(mApiClient, mGameChannel.getNamespace());
+                    mGameChannel = null;
                 }
-                mApplicationStarted = false;
+            } catch (IOException e) {
+                Log.e(TAG, "Exception while removing channel", e);
             }
-            mApiClient = null;
+            mApiClient.disconnect();
         }
+        mApiClient = null;
+        mApplicationStarted = false;
         mSelectedDevice = null;
         mWaitingForReconnect = false;
         mSessionId = null;
     }
+
+
 
     /**
      * Send a text message to the receiver
