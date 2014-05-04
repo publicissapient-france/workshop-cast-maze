@@ -39,3 +39,15 @@ Start [Jekyll](http://jekyllrb.com) in development mode
 Deploy on gh-pages
 
     $ cd workshop/ && grunt dist gh-pages
+
+### Talk
+
+Root folder
+
+    talk
+Start NodeJS for developement purpose and browse <code>http://localhost:8080/talk</code>
+
+    $ node server.js
+Deploy on gh-pages
+
+    $ cd talk/ && grunt dist gh-pages
