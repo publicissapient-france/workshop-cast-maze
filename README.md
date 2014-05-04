@@ -2,8 +2,8 @@
 
 ## Asset
 
-[Talk](http://xebia-france.github.io/workshop-cast-maze/talk/)
-[Workshop](http://xebia-france.github.io/workshop-cast-maze/workshop/)
+* [Talk](http://xebia-france.github.io/workshop-cast-maze/talk/)
+* [Workshop](http://xebia-france.github.io/workshop-cast-maze/workshop/)
 
 ## How To
 
