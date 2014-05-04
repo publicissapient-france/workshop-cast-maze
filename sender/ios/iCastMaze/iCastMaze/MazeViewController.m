@@ -9,6 +9,7 @@
 #import "MazeViewController.h"
 
 #import "MazeChannel.h"
+#import "DeviceViewController.h"
 
 #define APP_ID @"8D7FEAA1"
 
@@ -16,6 +17,8 @@
 @property(nonatomic, strong)GCKDeviceScanner       *deviceScanner;
 @property(nonatomic, strong)GCKDeviceManager       *deviceManager;
 @property(nonatomic, strong)MazeChannel            *mazeChannel;
+
+@property(nonatomic, strong)IBOutlet UIButton      *castBtn;
 
 @end
 
@@ -28,24 +31,27 @@
    self.deviceScanner = [[GCKDeviceScanner alloc] init];
 
    [self.deviceScanner addListener:self];
-   [self.deviceScanner startScan];
 
    return self;
 }
 
 - (void)viewDidLoad {
    self.view.delegate = self;
+   self.castBtn.hidden = YES;
+
+   [self.deviceScanner startScan];
 }
 
+#pragma mark - Cast delegates
+
 - (void)deviceDidComeOnline:(GCKDevice *)device {
-   NSBundle *bundle = [NSBundle mainBundle];
    NSLog(@"Device <%@> found", device.friendlyName);
-   self.deviceManager = [[GCKDeviceManager alloc]  initWithDevice:device
-                                                clientPackageName:bundle.bundleIdentifier];
 
-   self.deviceManager.delegate = self;
+   self.castBtn.hidden = NO;
+}
 
-   [self.deviceManager connect];
+- (void)deviceDidGoOffline:(GCKDevice *)device {
+   self.castBtn.hidden = (self.deviceScanner.devices.count == 0);
 }
 
 - (void)deviceManagerDidConnect:(GCKDeviceManager *)deviceManager {
@@ -65,8 +71,34 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
    [self.deviceManager addChannel:self.mazeChannel];
 }
 
+#pragma mark - View delegate
+
 - (void)mazeView:(MazeView *)view selectedMove:(MazeMove)movment {
    [self.mazeChannel move:movment];
+}
+
+#pragma mark - Listener
+
+- (IBAction)onChooseCastDevice:(UIButton *)sender {
+   DeviceViewController *controller = [DeviceViewController new];
+   UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+
+   controller.devices = self.deviceScanner.devices;
+
+   [self presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)onConnectToCastDevice:(NSNotification *)notification {
+   GCKDevice *device = notification.userInfo[@"device"];
+   NSBundle *bundle = [NSBundle mainBundle];
+
+   self.deviceManager = [[GCKDeviceManager alloc]  initWithDevice:device
+                                                clientPackageName:bundle.bundleIdentifier];
+
+   self.deviceManager.delegate = self;
+
+   [self.deviceManager connect];
+   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
