@@ -1,0 +1,10 @@
+pre {
+    padding: 0;
+    border: none;
+    margin: 0 0 30px !important;
+    background: inherit;
+}
+
+code, pre {
+    margin: 0;
+}
