@@ -2,6 +2,8 @@
 layout: main-layout
 ---
 
+{% include asset.md %}
+
 {% include setup.md %}
 
 ## Coding party
@@ -104,4 +106,17 @@ Félicitation ! Le joueur bouge ! Finissez le labyrinthe au plus vite :).
 
 ### Récupérer la couleur du joueur côté client
 
-La chromecast peut aussi communiquer avec ses clients.
+La chromecast peut aussi communiquer avec ses clients en utilisant des messages.
+
+Essayez de récupérer la couleur du joueur après la connection :
+
+Cela se passe dans la méthode <code>receiverListener(e)</code>, coder la conversion du paramètre en JSON et la vérification de l'existence du champ <code>color</code>
+
+    e.color
+Changez la couleur du fond par celle reçue :
+
+    document.body.style.backgroundColor = e.color;
+
+Déconnectez-vous puis reconnectez-vous à nouveau, vérifiez que la couleur du fond a bien changé.
+
+Bravo ! Vous avez réussi à recevoir des messages depuis la chromecast :).

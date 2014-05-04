@@ -4,7 +4,7 @@ var appId = '8D7FEAA1';
 var namespace = 'urn:x-cast:fr.xebia.workshop.cast.maze';
 
 /**
- * initialization
+ * Initialization
  */
 initializeCastApi = function () {
     var sessionRequest = new chrome.cast.SessionRequest(appId);
@@ -16,28 +16,28 @@ initializeCastApi = function () {
 };
 
 /**
- * initialization success callback
+ * Initialization success callback
  */
 function onInitSuccess() {
     log('init success');
 }
 
 /**
- * initiation error callback
+ * Initiation error callback
  */
 function onError() {
     log('error');
 }
 
 /**
- * generic success callback
+ * Generic success callback
  */
 function onSuccess(msg) {
     log(msg);
 }
 
 /**
- * session listener during initialization
+ * Session listener during initialization
  */
 function sessionListener(e) {
     session = e;
@@ -45,7 +45,7 @@ function sessionListener(e) {
 }
 
 /**
- * success for stopping app callback
+ * Success for stopping app callback
  */
 function onStopAppSuccess() {
     log('session stopped');
@@ -59,6 +59,11 @@ function launchApp() {
 
 function receiverListener(e) {
     if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
+    } else {
+        var msg = JSON.parse(e);
+        if (msg.color) {
+            document.body.style.backgroundColor = e.color;
+        }
     }
 }
 
@@ -85,7 +90,7 @@ function goFromKey(key) {
 }
 
 /**
- * request session success callback
+ * Request session success callback
  * @param {Object} e a non null new session
  */
 function onRequestSessionSuccess(e) {
@@ -105,11 +110,20 @@ function onLaunchError() {
     log('launch error');
 }
 
+/**
+ * Misc method to log into console box in web view
+ * @param msg message to log
+ */
 function log(msg) {
     var debug = document.getElementById('debug');
     debug.innerHTML += JSON.stringify(msg) + '<br/>';
 }
 
+/**
+ * Subscribe to Google Cast Api Available
+ * @param loaded API loaded or not
+ * @param errorInfo error information
+ */
 window['__onGCastApiAvailable'] = function (loaded, errorInfo) {
     if (loaded) {
         initializeCastApi();
@@ -118,6 +132,10 @@ window['__onGCastApiAvailable'] = function (loaded, errorInfo) {
     }
 };
 
+/**
+ * Retrieve key pressed
+ * @param evt on key pressed event
+ */
 document.onkeypress = function (evt) {
     evt = evt || window.event;
     var charCode = evt.keyCode || evt.which;
