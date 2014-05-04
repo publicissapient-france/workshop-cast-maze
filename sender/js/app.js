@@ -92,14 +92,14 @@ function onRequestSessionSuccess(e) {
     log('session success: ' + e.sessionId);
     session = e;
     document.getElementById('cast-icon').src = 'img/ic_cast_active.png';
-    session.addUpdateListener(sessionUpdateListener.bind(this));
+//    session.addUpdateListener(sessionUpdateListener.bind(this));
 }
 
-function sessionUpdateListener(isAlive) {
-    var msg = isAlive ? 'session updated' : 'session removed';
-    msg += ': ' + session.sessionId;
-    log(msg);
-}
+//function sessionUpdateListener(isAlive) {
+//    var msg = isAlive ? 'session updated' : 'session removed';
+//    msg += ': ' + session.sessionId;
+//    log(msg);
+//}
 
 function onLaunchError() {
     log('launch error');
