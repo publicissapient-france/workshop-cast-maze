@@ -100,7 +100,24 @@
                         </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" id="X1N-LR-Qq8"/>
+                    <navigationItem key="navigationItem" id="X1N-LR-Qq8">
+                        <barButtonItem key="rightBarButtonItem" id="uQm-uV-23G">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="WYh-a4-RM8">
+                                <rect key="frame" x="275" y="11" width="29" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" image="cast_off">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onCast:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Q2c-TG-z6b"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="castBtn" destination="WYh-a4-RM8" id="3ze-64-6Kh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
@@ -126,6 +143,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="cast_off" width="29" height="22"/>
         <image name="pad_down" width="64" height="64"/>
         <image name="pad_left" width="64" height="64"/>
         <image name="pad_right" width="64" height="64"/>

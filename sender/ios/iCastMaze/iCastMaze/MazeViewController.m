@@ -9,11 +9,10 @@
 #import "MazeViewController.h"
 
 #import "MazeChannel.h"
-#import "DeviceViewController.h"
 
 #define APP_ID @"8D7FEAA1"
 
-@interface MazeViewController ()
+@interface MazeViewController ()<UIActionSheetDelegate>
 @property(nonatomic, strong)GCKDeviceScanner       *deviceScanner;
 @property(nonatomic, strong)GCKDeviceManager       *deviceManager;
 @property(nonatomic, strong)MazeChannel            *mazeChannel;
@@ -37,9 +36,9 @@
 
 - (void)viewDidLoad {
    self.view.delegate = self;
-   self.castBtn.hidden = YES;
 
    [self.deviceScanner startScan];
+   [self reloadNavbar];
 }
 
 #pragma mark - Cast delegates
@@ -47,17 +46,18 @@
 - (void)deviceDidComeOnline:(GCKDevice *)device {
    NSLog(@"Device <%@> found", device.friendlyName);
 
-   self.castBtn.hidden = NO;
+   [self reloadNavbar];
 }
 
 - (void)deviceDidGoOffline:(GCKDevice *)device {
-   self.castBtn.hidden = (self.deviceScanner.devices.count == 0);
+   [self reloadNavbar];
 }
 
 - (void)deviceManagerDidConnect:(GCKDeviceManager *)deviceManager {
    NSLog(@"Connected to device!");
 
    [self.deviceManager launchApplication:APP_ID];
+   [self reloadNavbar];
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager
@@ -71,25 +71,85 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
    [self.deviceManager addChannel:self.mazeChannel];
 }
 
-#pragma mark - View delegate
+- (void)deviceManager:(GCKDeviceManager *)deviceManager didDisconnectWithError:(NSError *)error {
+   [self reloadNavbar];
+   self.deviceManager = nil;
+}
+
+- (void)deviceManager:(GCKDeviceManager *)deviceManager didFailToConnectWithError:(NSError *)error {
+   [self reloadNavbar];
+   self.deviceManager = nil;
+}
+
+#pragma mark - View
 
 - (void)mazeView:(MazeView *)view selectedMove:(MazeMove)movment {
    [self.mazeChannel move:movment];
 }
 
-#pragma mark - Listener
-
-- (IBAction)onChooseCastDevice:(UIButton *)sender {
-   DeviceViewController *controller = [DeviceViewController new];
-   UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-
-   controller.devices = self.deviceScanner.devices;
-
-   [self presentViewController:nav animated:YES completion:nil];
+- (void)reloadNavbar {
+   self.castBtn.hidden = (self.deviceScanner.devices.count == 0);
+   self.castBtn.selected = self.deviceManager.isConnected;
 }
 
-- (void)onConnectToCastDevice:(NSNotification *)notification {
-   GCKDevice *device = notification.userInfo[@"device"];
+#pragma mark - ActionSheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+   if (self.deviceManager.device) {
+      if (buttonIndex < self.deviceScanner.devices.count)
+         [self onConnectToCastDevice:self.deviceScanner.devices[buttonIndex]];
+   }
+   else {
+      if (buttonIndex == 0)
+         [self onDisconnectToDevice];
+   }
+}
+
+#pragma mark - Listener
+
+- (IBAction)onCast:(id)sender {
+   if (!self.deviceManager.device)
+      [self onChooseCastDevice:sender];
+   else
+      [self onShowSelectedDevice:sender];
+}
+
+- (void)onChooseCastDevice:(UIButton *)sender {
+   UIActionSheet *devicesSheet = [[UIActionSheet alloc] initWithTitle:@"Choose your device"
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+
+
+   for (GCKDevice *device in self.deviceScanner.devices) {
+      [devicesSheet addButtonWithTitle:device.friendlyName];
+   }
+
+   // Add Cancel button at the very end
+   [devicesSheet addButtonWithTitle:@"Cancel"];
+   devicesSheet.cancelButtonIndex = devicesSheet.numberOfButtons - 1;
+
+   [devicesSheet showInView:self.view];
+}
+
+- (void)onShowSelectedDevice:(id)sender {
+   UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:self.deviceManager.device.friendlyName
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+
+   [sheet addButtonWithTitle:@"Disconnect"];
+   sheet.destructiveButtonIndex = 0;
+
+   [sheet addButtonWithTitle:@"Cancel"];
+   sheet.cancelButtonIndex = 1;
+
+   [sheet showInView:self.view];
+}
+
+- (void)onConnectToCastDevice:(GCKDevice *)device {
    NSBundle *bundle = [NSBundle mainBundle];
 
    self.deviceManager = [[GCKDeviceManager alloc]  initWithDevice:device
@@ -98,7 +158,11 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
    self.deviceManager.delegate = self;
 
    [self.deviceManager connect];
-   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)onDisconnectToDevice {
+   [self.deviceManager leaveApplication];
+   [self.deviceManager disconnect];
 }
 
 @end
