@@ -13,7 +13,7 @@ $(document).ready(function () {
         log('Received sender connected event ' + event.data);
         log(window.castReceiverManager.getSender(event.data).userAgent);
         var color = addPlayer(event.senderId);
-        window.messageBus.send(even.senderId, {color: color});
+        window.messageBus.send(event.senderId, '#CCCCCC');
     };
 
     castReceiverManager.onSenderDisconnected = function (event) {
