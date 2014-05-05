@@ -18,7 +18,9 @@ $(document).ready(function () {
     castReceiverManager.onSenderConnected = function (event) {
         log('Received sender connected event ' + event.data);
         var color = addPlayer(event.senderId);
-        window.messageBus.send(event.senderId, event.senderId);
+        log('Sending hey');
+        window.messageBus.send(event.senderId, 'hey');
+        log('Hey sent');
     };
 
     castReceiverManager.onSenderDisconnected = function (event) {
@@ -32,8 +34,6 @@ $(document).ready(function () {
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
         handleKeypress(event.data, event.senderId);
-        window.messageBus.send(event.senderId, event.data);
-        window.messageBus.send(event.senderId, '#CCCCCC');
     };
 
     /**
