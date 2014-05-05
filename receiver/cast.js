@@ -1,23 +1,15 @@
 $(document).ready(function () {
 
-    window.castReceiverManager = null;
-    window.messageBus = null;
-
     cast.receiver.logger.setLevelValue(0);
-
-    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-    log('Starting receiver manager');
 
     window.castReceiverManager.onReady = function (event) {
         log('Received ready event ' + JSON.stringify(event.data));
         window.castReceiverManager.setApplicationState("Application status is ready...");
     };
 
-    window.castReceiverManager.start({statusText: "Application is starting"});
-    log('Receiver manager started');
-
     window.castReceiverManager.onSenderConnected = function (event) {
         log('Received sender connected event ' + event.data);
+        log(window.castReceiverManager.getSender(event.data).userAgent);
         addPlayer(event.senderId);
     };
 
@@ -29,13 +21,19 @@ $(document).ready(function () {
         }
     };
 
-    window.messageBus = window.castReceiverManager
-        .getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
-
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
         handleKeypress(event.data, event.senderId);
     };
+
+    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+    log('Starting receiver manager');
+
+    window.castReceiverManager.start({statusText: "Application is starting"});
+    log('Receiver manager started');
+
+    window.messageBus = window.castReceiverManager
+        .getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
     /**
      * Misc method to log into console box in web view
