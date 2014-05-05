@@ -4,6 +4,12 @@ $(document).ready(function () {
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
     log('Starting receiver manager');
 
+    window.castReceiverManager.start({statusText: "Application is starting"});
+    log('Receiver manager started');
+
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    log('Message bus started');
+
     castReceiverManager.onReady = function (event) {
         log('Received ready event ' + JSON.stringify(event.data));
         window.castReceiverManager.setApplicationState("Application status is ready...");
@@ -11,9 +17,8 @@ $(document).ready(function () {
 
     castReceiverManager.onSenderConnected = function (event) {
         log('Received sender connected event ' + event.data);
-        log(window.castReceiverManager.getSender(event.data).userAgent);
         var color = addPlayer(event.senderId);
-        window.messageBus.send(event.senderId, '#CCCCCC');
+        window.messageBus.send(event.senderId, event.senderId);
     };
 
     castReceiverManager.onSenderDisconnected = function (event) {
@@ -24,21 +29,12 @@ $(document).ready(function () {
         removePlayer(event.senderId);
     };
 
-    castReceiverManager.onSystemVolumeChanged = function (event) {
-        log('Received system volume changed event: ' + event.data['level'] + ' ' +
-            event.data['muted']);
-    };
-
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
-
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
         handleKeypress(event.data, event.senderId);
         window.messageBus.send(event.senderId, event.data);
+        window.messageBus.send(event.senderId, '#CCCCCC');
     };
-
-    window.castReceiverManager.start({statusText: "Application is starting"});
-    log('Receiver manager started');
 
     /**
      * Misc method to log into console box in web view
