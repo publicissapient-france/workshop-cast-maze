@@ -62,29 +62,18 @@ renseigner le namespace de l&#39;application dans la variable <code>namespace</c
 <p>Ajouter l&#39;API Chromecast à la page <code>index.html</code></p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text"> &lt;script type=&quot;text/javascript&quot; src=&quot;https://www.gstatic.com/cv/js/sender/v1/cast_sender.js&quot;&gt;&lt;/script&gt;
 </code></pre></div>
-<p>Ecoutez l&#39;événement <code>__onGCastApiAvailable</code> cf. <a href="https://developers.google.com/cast/docs/chrome_sender#Initialization">doc</a>,
+<p>Ecoutez l&#39;événement <code>__onGCastApiAvailable</code> cf. <a href="https://developers.google.com/cast/docs/chrome_sender#Initialization">Initialization</a>,
 cet événement necessite un callback prenant deux paramètres,
  si le premier paramètre est <code>true</code> alors exécutez la méthode</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text"> initializeCastApi()
 </code></pre></div>
 <p>Sinon affichez une erreur.</p>
 
-<p>La méthode <code>initializeCastApi()</code> permet d&#39;initialiser l&#39;API.</p>
+<p>La méthode <code>initializeCastApi()</code> permet d&#39;initialiser l&#39;API cf. <a href="https://developers.google.com/cast/docs/chrome_sender#Initialization">Initialization</a></p>
 
-<pre>
-    <code>
-    initializeCastApi = function() {
-      var sessionRequest = new chrome.cast.SessionRequest(applicationID);
-      var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
-        sessionListener,
-        receiverListener);
-      chrome.cast.initialize(apiConfig, onInitSuccess, onError);
-    };
-    </code>
-</pre>
+<p>Lorsque la session est initialisée, la méthode <code>sessionListener(e)</code> est appelée (nous verrons plus tard son fonctionnement).</p>
 
-<p>Lorsque la session est initialisée, la méthode <code>sessionListener(e)</code> est appelée.
-Sauvegarder la session ainsi récupérée.</p>
+<p>Sauvegarder la session ainsi récupérée.</p>
 
 <p>NB : une fois la session initialisée, la méthode <code>receiverListener(e)</code> permet de
 récupérer les messages envoyés par la chromecast.</p>
@@ -147,6 +136,10 @@ left
 <p>Déconnectez-vous puis reconnectez-vous à nouveau, vérifiez que la couleur du fond a bien changé.</p>
 
 <p>Bravo ! Vous avez réussi à recevoir des messages depuis la chromecast :).</p>
+
+<h2>Next ?</h2>
+
+<p>Codez la partie <a href="../index.html">receiver</a></p>
 
         </section>
         <aside id="sidebar">
