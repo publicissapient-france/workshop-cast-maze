@@ -16,12 +16,12 @@ $(document).ready(function () {
     window.castReceiverManager.start({statusText: "Application is starting"});
     log('Receiver manager started');
 
-    castReceiverManager.onSenderConnected = function (event) {
+    window.castReceiverManager.onSenderConnected = function (event) {
         log('Received sender connected event ' + event.data);
         addPlayer(event.senderId);
     };
 
-    castReceiverManager.onSenderDisconnected = function (event) {
+    window.castReceiverManager.onSenderDisconnected = function (event) {
         log('Received sender disconnected event ' + event.data);
         removePlayer(event.senderId);
         if (window.castReceiverManager.getSenders().length == 0) {
