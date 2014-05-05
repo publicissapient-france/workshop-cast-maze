@@ -15,8 +15,8 @@ $(document).ready(function () {
 
     window.castReceiverManager.onSenderConnected = function (event) {
         log('Received sender connected event ' + event.data);
-        addPlayer(event.senderId);
-        window.messageBus.send(event.senderId, 'hey');
+        var color = addPlayer(event.senderId);
+        window.messageBus.send(event.senderId, JSON.stringify({color: color}));
     };
 
     window.castReceiverManager.onSenderDisconnected = function (event) {
