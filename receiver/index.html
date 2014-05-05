@@ -10,18 +10,23 @@
             position: absolute;
             right: 0;
             top: 0;
-            width: 25%;
+            width: 500px;
             height: 100%;
             background-color: #EEE;
             padding: 10px;
             overflow: hidden;
         }
+
+        #maze {
+            display: block;
+            margin: 30px;
+            position: relative;
+        }
     </style>
 </head>
 <body>
 
-<canvas oncontextmenu="return false;" id="maze" width="750" height="750"
-        style="display: block; margin-top: 30px; margin-left:auto; margin-right:auto; position:relative;"></canvas>
+<canvas oncontextmenu="return false;" id="maze" width="750" height="750"></canvas>
 
 <div id="debug"></div>
 
