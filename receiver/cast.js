@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    cast.receiver.logger.setLevelValue(0);
+    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+//    cast.receiver.logger.setLevelValue(0);
 
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
     log('Starting receiver manager');
