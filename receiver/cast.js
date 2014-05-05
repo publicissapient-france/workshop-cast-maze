@@ -1,15 +1,8 @@
 $(document).ready(function () {
-    cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-//    cast.receiver.logger.setLevelValue(0);
+    cast.receiver.logger.setLevelValue(0);
 
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
     log('Starting receiver manager');
-
-    window.castReceiverManager.start({statusText: "Application is starting"});
-    log('Receiver manager started');
-
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
-    log('Message bus started');
 
     castReceiverManager.onReady = function (event) {
         log('Received ready event ' + JSON.stringify(event.data));
@@ -31,6 +24,12 @@ $(document).ready(function () {
         }
         removePlayer(event.senderId);
     };
+
+    window.castReceiverManager.start({statusText: "Application is starting"});
+    log('Receiver manager started');
+
+    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    log('Message bus started');
 
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
