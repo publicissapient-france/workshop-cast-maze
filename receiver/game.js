@@ -54,13 +54,15 @@ function handleMessage(action, playerId) {
 }
 
 function addPlayer(playerId) {
+    var color = colors[theMaze.playersCount % colors.length];
     theMaze.players[playerId] = {
         x: theMaze.startColumn,
         y: theMaze.startRow,
-        color: colors[theMaze.playersCount % colors.length]
+        color: color
     };
     theMaze.playersCount++;
     theMaze.drawPlayers(theMaze.players[playerId]);
+    return color;
 }
 
 function removePlayer(playerId) {
