@@ -2,8 +2,8 @@
 layout: main-layout
 ---
 
-# Choisissez un client
+# Choisissez un client (sender)
 
 * [Javascript](sender/javascript.html)
 
-# Ou choisissez le serveur
+# Ou choisissez le serveur (receiver)

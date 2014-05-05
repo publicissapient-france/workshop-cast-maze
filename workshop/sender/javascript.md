@@ -30,28 +30,17 @@ Ajouter l'API Chromecast à la page <code>index.html</code>
 
      <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 
-Ecoutez l'événement <code>__onGCastApiAvailable</code> cf. [doc](https://developers.google.com/cast/docs/chrome_sender#Initialization),
+Ecoutez l'événement <code>__onGCastApiAvailable</code> cf. [Initialization](https://developers.google.com/cast/docs/chrome_sender#Initialization),
 cet événement necessite un callback prenant deux paramètres,
  si le premier paramètre est <code>true</code> alors exécutez la méthode
 
      initializeCastApi()
 Sinon affichez une erreur.
 
-La méthode <code>initializeCastApi()</code> permet d'initialiser l'API.
+La méthode <code>initializeCastApi()</code> permet d'initialiser l'API cf. [Initialization](https://developers.google.com/cast/docs/chrome_sender#Initialization)
 
-<pre>
-    <code>
-    initializeCastApi = function() {
-      var sessionRequest = new chrome.cast.SessionRequest(applicationID);
-      var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
-        sessionListener,
-        receiverListener);
-      chrome.cast.initialize(apiConfig, onInitSuccess, onError);
-    };
-    </code>
-</pre>
+Lorsque la session est initialisée, la méthode <code>sessionListener(e)</code> est appelée (nous verrons plus tard son fonctionnement).
 
-Lorsque la session est initialisée, la méthode <code>sessionListener(e)</code> est appelée.
 Sauvegarder la session ainsi récupérée.
 
 NB : une fois la session initialisée, la méthode <code>receiverListener(e)</code> permet de
@@ -120,3 +109,5 @@ Changez la couleur du fond par celle reçue :
 Déconnectez-vous puis reconnectez-vous à nouveau, vérifiez que la couleur du fond a bien changé.
 
 Bravo ! Vous avez réussi à recevoir des messages depuis la chromecast :).
+
+{% include next-server.md %}
