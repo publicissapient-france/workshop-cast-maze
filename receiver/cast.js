@@ -8,7 +8,7 @@ $(document).ready(function () {
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
     log('Starting receiver manager');
 
-    castReceiverManager.onReady = function (event) {
+    window.castReceiverManager.onReady = function (event) {
         log('Received ready event ' + JSON.stringify(event.data));
         window.castReceiverManager.setApplicationState("Application status is ready...");
     };
