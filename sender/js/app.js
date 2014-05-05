@@ -8,8 +8,9 @@ var namespace = 'urn:x-cast:fr.xebia.workshop.cast.maze';
  */
 initializeCastApi = function () {
     var sessionRequest = new chrome.cast.SessionRequest(appId);
-    var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
-        sessionListener,
+    var apiConfig = new chrome.cast.ApiConfig(
+        sessionRequest,
+        onSessionListener,
         receiverListener);
 
     chrome.cast.initialize(apiConfig, onInitSuccess, onError);
@@ -33,31 +34,37 @@ function onError() {
  * Generic success callback
  */
 function onSuccess(msg) {
-    log(msg);
+    log('success');
 }
 
+function onReceiverMessage(namespace, message) {
+    if (message) {
+        log('message: ' + message);
+        var o = JSON.parse(message);
+        if (o.color) {
+            document.body.style.backgroundColor = o.color;
+        }
+    }
+}
 /**
  * Session listener during initialization
  */
-function sessionListener(e) {
+function onSessionListener(e) {
+    log('new session ' + e.sessionId);
     session = e;
-    log('new session id: ' + e.sessionId);
+    session.addMessageListener(namespace, onReceiverMessage);
 }
 
 /**
- * Success for stopping app callback
+ * On launch application button pressed
  */
-function onStopAppSuccess() {
-    log('session stopped');
-    document.getElementById('cast-icon').src = 'img/ic_cast_idle.png';
-}
-
 function launchApp() {
     log('launching app...');
-    chrome.cast.requestSession(onRequestSessionSuccess, onLaunchError);
+    chrome.cast.requestSession(onSessionListener, onLaunchError);
 }
 
 function receiverListener(e) {
+    log(JSON.stringify(e));
     if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
     } else {
         var msg = JSON.parse(e);
@@ -89,23 +96,6 @@ function goFromKey(key) {
     }
 }
 
-/**
- * Request session success callback
- * @param {Object} e a non null new session
- */
-function onRequestSessionSuccess(e) {
-    log('session success: ' + e.sessionId);
-    session = e;
-    document.getElementById('cast-icon').src = 'img/ic_cast_active.png';
-//    session.addUpdateListener(sessionUpdateListener.bind(this));
-}
-
-//function sessionUpdateListener(isAlive) {
-//    var msg = isAlive ? 'session updated' : 'session removed';
-//    msg += ': ' + session.sessionId;
-//    log(msg);
-//}
-
 function onLaunchError() {
     log('launch error');
 }
@@ -116,7 +106,9 @@ function onLaunchError() {
  */
 function log(msg) {
     var debug = document.getElementById('debug');
-    debug.innerHTML += JSON.stringify(msg) + '<br/>';
+    var tmpHTML = debug.innerHTML;
+    debug.innerHTML = '';
+    debug.innerHTML = JSON.stringify(msg) + '<br/>' + tmpHTML;
 }
 
 /**

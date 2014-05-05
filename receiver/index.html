@@ -5,11 +5,30 @@
         body {
             overflow: hidden;
         }
+
+        #debug {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 25%;
+            height: 100%;
+            background-color: #EEE;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        #maze {
+            position: relative;
+            display: block;
+            margin: 30px;
+        }
     </style>
 </head>
 <body>
 
-<canvas oncontextmenu="return false;" id="maze" width="750" height="750" style="display: block; margin-top: 30px; margin-left:auto; margin-right:auto; position:relative;"></canvas>
+<canvas oncontextmenu="return false;" id="maze" width="750" height="750"></canvas>
+
+<div id="debug"></div>
 
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
 <script type="text/javascript" src="jquery-1.11.0.min.js"></script>
