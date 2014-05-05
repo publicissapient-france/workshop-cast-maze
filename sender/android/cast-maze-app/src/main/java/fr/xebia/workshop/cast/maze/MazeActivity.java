@@ -31,7 +31,6 @@ public class MazeActivity extends ActionBarActivity {
 
     private MediaRouter mMediaRouter;
     private MediaRouteSelector mMediaRouteSelector;
-    private MediaRouter.Callback mMediaRouterCallback;
     private CastDevice mSelectedDevice;
     private GoogleApiClient mApiClient;
     private GameChannel mGameChannel;
@@ -49,8 +48,7 @@ public class MazeActivity extends ActionBarActivity {
         // Configure Cast device discovery
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast(getResources().getString(R.string.app_id))).build();
-        mMediaRouterCallback = new MyMediaRouterCallback();
+                .addControlCategory(CastMediaControlIntent.categoryForCast(getString(R.string.app_id))).build();
     }
 
     @Override
@@ -68,13 +66,13 @@ public class MazeActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         // Start media router discovery
-        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback, MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
+        mMediaRouter.addCallback(mMediaRouteSelector, new MediaRouterCallback(), MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
     }
 
     /**
      * Callback for MediaRouter events
      */
-    private class MyMediaRouterCallback extends MediaRouter.Callback {
+    private class MediaRouterCallback extends MediaRouter.Callback {
 
         @Override
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
@@ -123,8 +121,7 @@ public class MazeActivity extends ActionBarActivity {
     /**
      * Google Play services callbacks
      */
-    private class ConnectionCallbacks implements
-            GoogleApiClient.ConnectionCallbacks {
+    private class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
         @Override
         public void onConnected(Bundle connectionHint) {
             Log.d(TAG, "onConnected");
@@ -156,8 +153,7 @@ public class MazeActivity extends ActionBarActivity {
                     }
                 } else {
                     // Launch the receiver app
-                    Cast.CastApi.launchApplication(mApiClient, getString(R.string.app_id), false)
-                            .setResultCallback(new CastConnectionResultCallback());
+                    Cast.CastApi.launchApplication(mApiClient, getString(R.string.app_id)).setResultCallback(new CastConnectionResultCallback());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Failed to launch application", e);
@@ -178,7 +174,6 @@ public class MazeActivity extends ActionBarActivity {
         @Override
         public void onConnectionFailed(ConnectionResult result) {
             Log.e(TAG, "onConnectionFailed ");
-
             teardown();
         }
     }
@@ -189,8 +184,7 @@ public class MazeActivity extends ActionBarActivity {
             Status status = result.getStatus();
             Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + status.getStatusCode());
             if (status.isSuccess()) {
-                ApplicationMetadata applicationMetadata = result
-                        .getApplicationMetadata();
+                ApplicationMetadata applicationMetadata = result.getApplicationMetadata();
                 mSessionId = result.getSessionId();
                 String applicationStatus = result.getApplicationStatus();
                 boolean wasLaunched = result.getWasLaunched();
@@ -198,17 +192,15 @@ public class MazeActivity extends ActionBarActivity {
                         "sessionId: " + mSessionId + ", wasLaunched: " + wasLaunched);
                 mApplicationStarted = true;
 
-                // Create the custom message
-                // channel
+                // Create the custom message channel
                 mGameChannel = new GameChannel();
                 try {
                     Cast.CastApi.setMessageReceivedCallbacks(mApiClient, mGameChannel.getNamespace(), mGameChannel);
                 } catch (IOException e) {
-                    Log.e(TAG,"Exception while creating channel",  e);
+                    Log.e(TAG, "Exception while creating channel", e);
                 }
-                // Show button
             } else {
-                Log.e(TAG,"application could not launch");
+                Log.e(TAG, "application could not launch");
                 teardown();
             }
         }
@@ -221,7 +213,7 @@ public class MazeActivity extends ActionBarActivity {
         Log.d(TAG, "teardown");
         if (mApiClient != null && mApplicationStarted && mApiClient.isConnected()) {
             try {
-                Cast.CastApi.stopApplication(mApiClient, mSessionId);
+                Cast.CastApi.leaveApplication(mApiClient);
                 if (mGameChannel != null) {
                     Cast.CastApi.removeMessageReceivedCallbacks(mApiClient, mGameChannel.getNamespace());
                     mGameChannel = null;
@@ -237,7 +229,6 @@ public class MazeActivity extends ActionBarActivity {
         mWaitingForReconnect = false;
         mSessionId = null;
     }
-
 
 
     /**
