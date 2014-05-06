@@ -4,8 +4,10 @@ $(document).ready(function () {
 
     if (debug) {
         document.getElementById('debug').style.display = 'block';
+        document.getElementById('maze').style.margin = '30px';
     } else {
         document.getElementById('debug').style.display = 'none';
+        document.getElementById('maze').style.margin = '30px auto';
     }
 
     cast.receiver.logger.setLevelValue(0);
