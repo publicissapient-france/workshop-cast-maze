@@ -75,8 +75,8 @@ cet événement necessite un callback prenant deux paramètres,
 
 <p>Sauvegarder la session ainsi récupérée.</p>
 
-<p>NB : une fois la session initialisée, la méthode <code>receiverListener(e)</code> permet de
-récupérer les messages envoyés par la chromecast.</p>
+<p>NB : la méthode <a href="https://developers.google.com/cast/docs/reference/chrome/chrome.cast.ApiConfig#receiverListener">receiverListener(e)</a>
+est invoquée lorsque qu&#39;un receiver qui supporte l&#39;application demandée est connu ou change.</p>
 
 <p>Lancer le serveur NodeJS (racine du projet) :</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">$ npm install
@@ -99,7 +99,7 @@ votre navigateur à la chromecast cf. <a href="https://developers.google.com/cas
 <p>Retournez sur la page web :</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">http://localhost:8080/sender/js/index.html
 </code></pre></div>
-<p>Et vérifiez qu&#39;en cliquant sur le bouton <code>Launch app</code> un nouveau joueur apparait bien sur
+<p>Et vérifiez qu&#39;en cliquant sur le bouton <code>Launch app</code> un nouveau joueur apparaît bien sur
  l&#39;écran connecté à la chromecast.</p>
 
 <p>Félicitation la connection à la chromecast est réussie ! Allons
@@ -125,9 +125,11 @@ left
 
 <p>La chromecast peut aussi communiquer avec ses clients en utilisant des messages.</p>
 
+<p>Pour cela, il faut ajouter un listener à la session cf <a href="https://developers.google.com/cast/docs/reference/chrome/chrome.cast.Session#addMessageListener">addMessageListener</a></p>
+
 <p>Essayez de récupérer la couleur du joueur après la connection :</p>
 
-<p>Cela se passe dans la méthode <code>receiverListener(e)</code>, coder la conversion du paramètre en JSON et la vérification de l&#39;existence du champ <code>color</code></p>
+<p>Cela se passera dans la méthode <code>onReceiverMessage(e)</code>, coder la conversion du paramètre en JSON et la vérification de l&#39;existence du champ <code>color</code></p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">e.color
 </code></pre></div>
 <p>Changez la couleur du fond par celle reçue :</p>

@@ -57,7 +57,7 @@ les joueurs.</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;script type=&quot;text/javascript&quot; src=&quot;//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js&quot;&gt;&lt;/script&gt;
 </code></pre></div>
 <p>Activez le mode debug dans le fichier <code>cast.js</code></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">var debug = true;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">window.debug = true;
 </code></pre></div>
 <p>Indiquez un niveau de log égal à <code>NONE</code> cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
 
@@ -73,7 +73,7 @@ les joueurs.</p>
 
 <p>Récupérez une instance du <code>CastReceiverManager</code>.</p>
 
-<p>Lancez l&#39;application cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager">CastReceiver</a></p>
+<p>Lancez l&#39;application cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager#start">CastReceiver</a></p>
 
 <h3>Connection d&#39;un joueur</h3>
 
