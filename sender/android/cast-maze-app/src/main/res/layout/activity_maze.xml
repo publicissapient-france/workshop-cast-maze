@@ -8,35 +8,42 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="fr.xebia.workshop.cast.maze.MazeActivity">
 
-    <Button
+    <ImageView
             android:id="@+id/up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="up"/>
+            android:src="@drawable/arrow_up"
+            android:tag="up"/>
 
-    <Button
+    <ImageView
             android:id="@+id/left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/up"
             android:layout_alignParentLeft="true"
-            android:text="left"/>
+            android:layout_marginLeft="40dp"
+            android:src="@drawable/arrow_left"
+            android:tag="left"/>
 
-    <Button
+    <ImageView
             android:id="@+id/right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/up"
             android:layout_alignParentRight="true"
-            android:text="right"/>
+            android:layout_marginRight="40dp"
+            android:src="@drawable/arrow_right"
+            android:tag="right"/>
 
-    <Button
+    <ImageView
             android:id="@+id/down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/left"
-            android:text="down"/>
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/arrow_down"
+            android:tag="down"/>
 
 </RelativeLayout>

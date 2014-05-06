@@ -1,5 +1,7 @@
 package fr.xebia.workshop.cast.maze;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -9,7 +11,7 @@ import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,6 +23,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -153,7 +157,8 @@ public class MazeActivity extends ActionBarActivity {
                     }
                 } else {
                     // Launch the receiver app
-                    Cast.CastApi.launchApplication(mApiClient, getString(R.string.app_id)).setResultCallback(new CastConnectionResultCallback());
+                    Cast.CastApi.launchApplication(mApiClient, getString(R.string.app_id)).setResultCallback(new
+                            CastConnectionResultCallback());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Failed to launch application", e);
@@ -204,6 +209,12 @@ public class MazeActivity extends ActionBarActivity {
                 teardown();
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        teardown();
     }
 
     /**
@@ -272,17 +283,27 @@ public class MazeActivity extends ActionBarActivity {
          * Receive message from the receiver app
          */
         @Override
-        public void onMessageReceived(CastDevice castDevice, String namespace,
-                                      String message) {
+        public void onMessageReceived(CastDevice castDevice, String namespace, String message) {
             Log.d(TAG, "onMessageReceived: " + message);
+            try {
+                String hexColor = new JSONObject(message).getString("color");
+                getWindow().setBackgroundDrawable(new ColorDrawable(hex2Rgb(hexColor)));
+            } catch (JSONException e) {
+                Log.d(TAG, "uh oh, should not happen!", e);
+            }
         }
 
     }
 
+    public static int hex2Rgb(String colorStr) {
+        return Color.rgb(Integer.valueOf(colorStr.substring(1, 3), 16),
+                Integer.valueOf(colorStr.substring(3, 5), 16),
+                Integer.valueOf(colorStr.substring(5, 7), 16));
+    }
 
     @OnClick({R.id.up, R.id.left, R.id.down, R.id.right})
-    public void onActionClicked(Button button) {
-        sendMessage(button.getText().toString());
+    public void onActionClicked(View v) {
+        sendMessage(v.getTag().toString());
     }
 
 }
