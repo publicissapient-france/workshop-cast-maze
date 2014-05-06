@@ -95,7 +95,7 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 #pragma mark - ActionSheet delegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-   if (self.deviceManager.device) {
+   if (!self.deviceManager.device) {
       if (buttonIndex < self.deviceScanner.devices.count)
          [self onConnectToCastDevice:self.deviceScanner.devices[buttonIndex]];
    }
