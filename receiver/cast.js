@@ -1,5 +1,15 @@
 $(document).ready(function () {
 
+    var debug = false;
+
+    if (debug) {
+        document.getElementById('debug').style.display = 'block';
+        document.getElementById('maze').style.margin = '30px';
+    } else {
+        document.getElementById('debug').style.display = 'none';
+        document.getElementById('maze').style.margin = '30px auto';
+    }
+
     cast.receiver.logger.setLevelValue(0);
 
     window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
@@ -40,9 +50,11 @@ $(document).ready(function () {
      * @param msg message to log
      */
     function log(msg) {
-        var debug = document.getElementById('debug');
-        var tmpHTML = debug.innerHTML;
-        debug.innerHTML = '';
-        debug.innerHTML = msg + '<br/>' + tmpHTML;
+        if (debug) {
+            var debug = document.getElementById('debug');
+            var tmpHTML = debug.innerHTML;
+            debug.innerHTML = '';
+            debug.innerHTML = msg + '<br/>' + tmpHTML;
+        }
     }
 });
