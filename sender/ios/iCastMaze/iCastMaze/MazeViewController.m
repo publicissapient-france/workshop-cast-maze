@@ -9,6 +9,7 @@
 #import "MazeViewController.h"
 
 #import "MazeChannel.h"
+#import "MazePlayer.h"
 
 #define APP_ID @"8D7FEAA1"
 
@@ -16,6 +17,7 @@
 @property(nonatomic, strong)GCKDeviceScanner       *deviceScanner;
 @property(nonatomic, strong)GCKDeviceManager       *deviceManager;
 @property(nonatomic, strong)MazeChannel            *mazeChannel;
+@property(nonatomic, strong)MazePlayer              *player;
 
 @property(nonatomic, strong)IBOutlet UIButton      *castBtn;
 
@@ -66,9 +68,17 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
   launchedApplication:(BOOL)launchedApp {
    NSLog(@"Joined <%@>. Enjoy!", applicationMetadata.applicationName);
 
-   self.mazeChannel = [MazeChannel new];
+    self.player = [MazePlayer new];
+    self.mazeChannel = [[MazeChannel alloc] initWithPlayer:self.player];
 
-   [self.deviceManager addChannel:self.mazeChannel];
+    [self.deviceManager addChannel:self.mazeChannel];
+}
+
+- (void)deviceManager:(GCKDeviceManager *)deviceManager didDisconnectFromApplicationWithError:(NSError *)error {
+    self.player = nil;
+    self.mazeChannel = nil;
+    
+    [self.view reload];
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager didDisconnectWithError:(NSError *)error {
@@ -85,6 +95,10 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 
 - (void)mazeView:(MazeView *)view selectedMove:(MazeMove)movment {
    [self.mazeChannel move:movment];
+}
+
+- (MazePlayer *)mazeViewPlayer:(MazeView *)view {
+    return self.player;
 }
 
 - (void)reloadNavbar {
@@ -163,6 +177,21 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 - (void)onDisconnectToDevice {
    [self.deviceManager leaveApplication];
    [self.deviceManager disconnect];
+}
+
+#pragma mark - Accessors
+
+- (void)setPlayer:(MazePlayer *)player {
+    if (player == _player)
+        return;
+
+    [_player removeObserver:self forKeyPath:@"color"];
+    _player = player;
+    [_player addObserver:self forKeyPath:@"color" options:0 context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    [self.view reload];
 }
 
 @end

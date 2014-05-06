@@ -8,11 +8,15 @@
 
 #import "MazeView.h"
 
+#import "MazePlayer.h"
+
 @interface MazeView ()
 @property(nonatomic, strong)IBOutlet UIButton   *upBtn;
 @property(nonatomic, strong)IBOutlet UIButton   *downBtn;
 @property(nonatomic, strong)IBOutlet UIButton   *leftBtn;
 @property(nonatomic, strong)IBOutlet UIButton   *rightBtn;
+
+@property(nonatomic, strong)IBOutlet UIView     *playerColorView;
 @end
 
 @implementation MazeView
@@ -24,6 +28,12 @@
    self.downBtn.tag = MazeMoveDown;
    self.leftBtn.tag = MazeMoveLeft;
    self.rightBtn.tag = MazeMoveRight;
+}
+
+- (void)reload {
+    MazePlayer *player = [self.delegate mazeViewPlayer:self];
+
+    self.playerColorView.backgroundColor = player.color ?: [UIColor clearColor];
 }
 
 - (IBAction)onPadTouched:(UIButton *)sender {

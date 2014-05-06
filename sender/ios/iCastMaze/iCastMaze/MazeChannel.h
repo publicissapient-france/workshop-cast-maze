@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class MazePlayer;
+
 @interface MazeChannel : GCKCastChannel
 
+@property(nonatomic, strong, readonly)MazePlayer    *player;
+
+- (id)init UNAVAILABLE_ATTRIBUTE;
 - (id)initWithNamespace:(NSString *)protocolNamespace UNAVAILABLE_ATTRIBUTE;
+- (instancetype)initWithPlayer:(MazePlayer *)player;
 
 - (void)move:(MazeMove)movment;
 

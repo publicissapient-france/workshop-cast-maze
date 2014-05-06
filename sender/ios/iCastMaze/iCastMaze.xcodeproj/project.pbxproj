@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		492B22C31916465D00D7B44F /* MazeChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 492B22C21916465D00D7B44F /* MazeChannel.m */; };
+		499EE82B1918E6A00071950E /* MazePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 499EE82A1918E6A00071950E /* MazePlayer.m */; };
+		499EE82E19192B230071950E /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 499EE82D19192B230071950E /* UIColor+Hex.m */; };
 		49E1CA4E1914FBBC0047290E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E1CA4D1914FBBC0047290E /* Foundation.framework */; };
 		49E1CA501914FBBC0047290E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E1CA4F1914FBBC0047290E /* CoreGraphics.framework */; };
 		49E1CA521914FBBC0047290E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49E1CA511914FBBC0047290E /* UIKit.framework */; };
@@ -40,6 +42,10 @@
 		492B22C11916465D00D7B44F /* MazeChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeChannel.h; sourceTree = "<group>"; };
 		492B22C21916465D00D7B44F /* MazeChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeChannel.m; sourceTree = "<group>"; };
 		492B22C419164FDA00D7B44F /* Maze.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Maze.h; sourceTree = "<group>"; };
+		499EE8291918E6A00071950E /* MazePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazePlayer.h; sourceTree = "<group>"; };
+		499EE82A1918E6A00071950E /* MazePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazePlayer.m; sourceTree = "<group>"; };
+		499EE82C19192B230071950E /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
+		499EE82D19192B230071950E /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 		49E1CA4A1914FBBC0047290E /* iCastMaze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCastMaze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E1CA4D1914FBBC0047290E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49E1CA4F1914FBBC0047290E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -135,6 +141,10 @@
 				492B22C11916465D00D7B44F /* MazeChannel.h */,
 				492B22C21916465D00D7B44F /* MazeChannel.m */,
 				492B22C419164FDA00D7B44F /* Maze.h */,
+				499EE8291918E6A00071950E /* MazePlayer.h */,
+				499EE82A1918E6A00071950E /* MazePlayer.m */,
+				499EE82C19192B230071950E /* UIColor+Hex.h */,
+				499EE82D19192B230071950E /* UIColor+Hex.m */,
 			);
 			path = iCastMaze;
 			sourceTree = "<group>";
@@ -270,7 +280,9 @@
 				492B22C31916465D00D7B44F /* MazeChannel.m in Sources */,
 				49E1CA861914FDB00047290E /* MazeView.m in Sources */,
 				49E1CA5E1914FBBC0047290E /* MazeAppDelegate.m in Sources */,
+				499EE82E19192B230071950E /* UIColor+Hex.m in Sources */,
 				49E1CA641914FBBC0047290E /* MazeViewController.m in Sources */,
+				499EE82B1918E6A00071950E /* MazePlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
