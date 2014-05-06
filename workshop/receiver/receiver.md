@@ -29,7 +29,7 @@ Ajoutez l'import du SDK dans le fichier <code>index.html</code>
 
 Activez le mode debug dans le fichier <code>cast.js</code>
 
-    var debug = true;
+    window.debug = true;
 
 Indiquez un niveau de log égal à <code>NONE</code> cf. [cast.receiver.LoggerLevel](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE)
 
@@ -46,7 +46,7 @@ Affichez la console pour debugger le receiver.
 
 Récupérez une instance du <code>CastReceiverManager</code>.
 
-Lancez l'application cf. [CastReceiver](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager)
+Lancez l'application cf. [CastReceiver](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager#start)
 
 ### Connection d'un joueur
 
