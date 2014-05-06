@@ -1,19 +1,13 @@
 var session = null;
 
-var appId = '8D7FEAA1';
-var namespace = 'urn:x-cast:fr.xebia.workshop.cast.maze';
+var appId = ''; // TODO
+var namespace = ''; // TODO
 
 /**
- * Initialization
+ * Init cast API
  */
 initializeCastApi = function () {
-    var sessionRequest = new chrome.cast.SessionRequest(appId);
-    var apiConfig = new chrome.cast.ApiConfig(
-        sessionRequest,
-        onSessionListener,
-        receiverListener);
-
-    chrome.cast.initialize(apiConfig, onInitSuccess, onError);
+    // TODO
 };
 
 /**
@@ -33,26 +27,27 @@ function onError() {
 /**
  * Generic success callback
  */
-function onSuccess(msg) {
+function onSuccess() {
     log('success');
 }
 
+/**
+ * When receive message from receiver
+ *
+ * @param namespace receiver namespace
+ * @param message string sent by the receiver
+ */
 function onReceiverMessage(namespace, message) {
-    if (message) {
-        log('message: ' + message);
-        var o = JSON.parse(message);
-        if (o.color) {
-            document.body.style.backgroundColor = o.color;
-        }
-    }
+    // TODO
 }
+
 /**
  * Session listener during initialization
  */
 function onSessionListener(e) {
     log('new session ' + e.sessionId);
-    session = e;
-    session.addMessageListener(namespace, onReceiverMessage);
+    // TODO save session
+    // TODO add message listener
 }
 
 /**
@@ -60,23 +55,21 @@ function onSessionListener(e) {
  */
 function launchApp() {
     log('launching app...');
-    chrome.cast.requestSession(onSessionListener, onLaunchError);
+    // TODO
 }
 
+/**
+ * When sender connected to receiver
+ * When configuration change
+ * @param e string
+ */
 function receiverListener(e) {
     log(JSON.stringify(e));
-    if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
-    } else {
-        var msg = JSON.parse(e);
-        if (msg.color) {
-            document.body.style.backgroundColor = e.color;
-        }
-    }
 }
 
 function go(dir) {
     log('go to:' + dir);
-    session.sendMessage(namespace, dir, onSuccess, onError);
+    // TODO send message to receiver
 }
 
 function goFromKey(key) {
@@ -116,13 +109,7 @@ function log(msg) {
  * @param loaded API loaded or not
  * @param errorInfo error information
  */
-window['__onGCastApiAvailable'] = function (loaded, errorInfo) {
-    if (loaded) {
-        initializeCastApi();
-    } else {
-        console.log(errorInfo);
-    }
-};
+// TODO
 
 /**
  * Retrieve key pressed
