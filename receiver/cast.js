@@ -1,14 +1,16 @@
-$(document).ready(function () {
+window.debug = false;
 
-    var debug = false;
-
-    if (debug) {
+function checkDebug() {
+    if (window.debug) {
         document.getElementById('debug').style.display = 'block';
         document.getElementById('maze').style.margin = '30px';
     } else {
         document.getElementById('debug').style.display = 'none';
         document.getElementById('maze').style.margin = '30px auto';
     }
+}
+
+$(document).ready(function () {
 
     cast.receiver.logger.setLevelValue(0);
 
