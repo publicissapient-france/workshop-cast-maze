@@ -67,7 +67,15 @@ Utiliser la méthode [launchApplication](http://developer.android.com/reference/
 
 ## Verification du status de la connexion
 
-Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre connexion. C'est généralement ici que l'on enregistre un channel pour recevoir des messages du receiver. Dans notre cas nous ne n'utiliserons pas cette fonctionnalité. Un exemple est cependant fourni dans la solution de l'exercice.
+Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre connexion. C'est généralement ici que l'on enregistre un channel pour recevoir des messages du receiver. Dans notre cas le receiver vas nous envoyer un message
+précisant la couleur de notre joueur. Utiliser la méthode [Cast.CastApi.setMessageReceivedCallbacks](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#setMessageReceivedCallbacks\(com.google.android.gms.common.api.GoogleApiClient, java.lang.String, com.google.android.gms.cast.Cast.MessageReceivedCallback\)). Le namespace de notre application est :
+<pre><code>urn:x-cast:fr.xebia.workshop.cast.maze</code></pre>
+
+Quant au format du message, voici un exemple:
+<pre><code>{"color":"#0099CC"}</code></pre>
+
+Un utilitaire permettant de faire la conversion de l'hexa vers le rgb vous ait fourni. Maintenant utiliser la méthode [setBackgroundDrawable](http://developer.android.com/reference/android/view/Window.html#setBackgroundDrawable\(android.graphics.drawable.Drawable\)) de votre window pour mettre votre couleur en arrière plan.
+
 
 ## Envoi d'un message
 
