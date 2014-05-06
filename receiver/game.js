@@ -5,13 +5,26 @@ var colors = ['#0099CC', '#9933CC', '#669900', '#FF8A00', '#CC0000', '#33B5E5', 
     '#DDBCEE', '#D3E992', '#FFE3A0', '#FFCACA', '#00008B', '#008B8B', '#B8860B', '#A9A9A9', '#006400', '#BDB76B', '#8B008B', '#556B2F',
     '#FF8C00', '#8B0000', '#E9967A', '#8FBC8F'];
 
-$(document).ready(function () {
+function newMaze() {
+    var players = [];
+    if (theMaze) {
+        players = theMaze.players;
+    }
+    document.getElementById('maze').remove();
+    document.getElementById('maze-container').innerHTML = "<canvas oncontextmenu='return false;' id='maze' width='750' height='750'></canvas>";
     canvas = document.getElementById('maze');
     context = canvas.getContext('2d');
     context.font = "bold 20px sans-serif";
     $(document).keydown(handleKeypress);
 
     makeMaze();
+
+    for (var id in players) {
+        addPlayer(id);
+    }
+}
+$(document).ready(function () {
+    newMaze();
 });
 
 function makeMaze() {
@@ -68,6 +81,18 @@ function addPlayer(playerId) {
 function removePlayer(playerId) {
     theMaze.players[playerId] = undefined;
     // TODO: clear maze
+}
+
+function checkWinner(player) {
+    if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
+        var winner = document.getElementById('winner');
+        winner.style.display = 'block';
+        document.getElementById('winner-color').style.backgroundColor = player.color;
+        setTimeout(function () {
+            winner.style.display = 'none';
+            newMaze();
+        }, 10000);
+    }
 }
 
 function handleKeypress(direction, playerId) {
@@ -128,6 +153,7 @@ function handleKeypress(direction, playerId) {
         player.x += changeX;
         player.y += changeY;
         theMaze.drawPlayers();
+        checkWinner(player);
     }
 };
 
@@ -140,7 +166,7 @@ function maze(rows, columns, gridsize, mazeStyle, startColumn, startRow, endColu
     this.sizey = gridsize * columns;
     this.halfgridsize = this.gridsize / 2;
     this.grid = new Array(this.columns);
-    this.history = new Array();
+    this.history = [];
     this.startColumn = parseInt(startColumn);
     this.startRow = parseInt(startRow);
     this.players = [];
@@ -155,10 +181,10 @@ function maze(rows, columns, gridsize, mazeStyle, startColumn, startRow, endColu
     this.genStartRow = Math.floor(Math.random() * (this.rows - 1));
     this.cellCount = this.columns * this.rows;
     this.generatedCellCount = 0;
-    for (i = 0; i < columns; i++) {
+    for (var i = 0; i < columns; i++) {
         this.grid[i] = new Array(rows);
     }
-    for (j = 0; j < this.columns; j++) {
+    for (var j = 0; j < this.columns; j++) {
         for (k = 0; k < this.rows; k++) {
             var isStart = false;
             var isEnd = false;
@@ -413,9 +439,7 @@ maze.prototype.generate = function () {
             chooseCell();
             addToMaze();
             currentCell = nextCell;
-            //console.log(currentCell);
             theMaze.generatedCellCount += 1;
-            //doGeneration();
         }
     }
 };
@@ -423,13 +447,14 @@ maze.prototype.generate = function () {
 maze.prototype.draw = function () {
     var totalWidth = this.columns * this.gridsize;
     var totalHeight = this.rows * this.gridsize;
-    $('#maze').attr("width", totalWidth);
-    $('#maze').attr("height", totalHeight);
+    var mazeDom = document.getElementById('maze');
+    mazeDom.width = totalWidth;
+    mazeDom.height = totalHeight;
     context.lineWidth = this.lineWidth;
     context.clearRect(0, 0, totalWidth, totalHeight);
     context.strokeStyle = this.wallColor;
-    for (j = 0; j < this.columns; j++) {
-        for (k = 0; k < this.rows; k++) {
+    for (var j = 0; j < this.columns; j++) {
+        for (var k = 0; k < this.rows; k++) {
             var drawX = (j * this.gridsize);
             var drawY = (k * this.gridsize);
             var pastX = parseInt(drawX) + parseInt(this.gridsize);

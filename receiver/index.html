@@ -22,13 +22,46 @@
             display: block;
             margin: 30px;
         }
+
+        #winner {
+            padding: 50px;
+            position: absolute;
+            display: none;
+            height: 250px;
+            width: 300px;
+            margin-left: -300px;
+            top: 0;
+            left: 50%;
+            text-align: center;
+            background-color: #EEE;
+        }
+
+        #winner-color {
+            height: 100px;
+            width: 100px;
+            background-color: #009926;
+            border-radius: 3px;
+            margin: 30px auto;
+        }
     </style>
 </head>
 <body>
 
-<canvas oncontextmenu="return false;" id="maze" width="750" height="750"></canvas>
+<div id="maze-container">
+    <canvas oncontextmenu="return false;" id="maze" width="750" height="750"></canvas>
+</div>
 
 <div id="debug"></div>
+
+<div id="winner">
+    Congratulation
+    <div id="winner-color"></div>
+    <br/>
+    You win!
+    <br/>
+    <br/>
+    New game in 10 secondes :)
+</div>
 
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
 <script type="text/javascript" src="jquery-1.11.0.min.js"></script>
