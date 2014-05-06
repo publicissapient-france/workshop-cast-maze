@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/zenburn.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/pygment_trac.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css" media="screen"/>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Multi-player Bomberman sample with Chromecast</title>
+</head>
+
+<body>
+<header>
+    <div class="inner">
+        <h1>Multi-player Bomberman sample</h1>
+
+        <h2>with Chromecast</h2>
+        <a target="_blank" href="https://github.com/xebia-france/workshop-cast-maze" class="button">
+            <small>View project on</small>
+            GitHub</a>
+    </div>
+</header>
+
+<div id="content-wrapper">
+    <div class="inner clearfix">
+        <section id="main-content">
+            <h2>Outils</h2>
+
+<p>Google Cast API Reference : <a href="https://developers.google.com/cast/docs/reference/">docs</a></p>
+
+<h2>Setup</h2>
+
+<p>Faites un fork du dépôt puis un git clone :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"> $ https://github.com/xebia-france/workshop-cast-maze.git
+</code></pre></div>
+<h2>Coding party</h2>
+
+<p>Ouvrez le fichier suivant dans votre IDE favori</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">receiver/cast.js
+</code></pre></div>
+<p>Ce fichier contiendra tout le code nécessaire pour communiquer avec la chromecast.</p>
+
+<p>Nous allons développer un <a href="https://developers.google.com/cast/docs/custom_receiver">Custom Receiver Application</a> pour gérer le labyrinthe et
+les joueurs.</p>
+
+<h3>Configuration</h3>
+
+<p>Ajoutez l&#39;import du SDK dans le fichier <code>index.html</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;script type=&quot;text/javascript&quot; src=&quot;//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js&quot;&gt;&lt;/script&gt;
+</code></pre></div>
+<p>Activez le mode debug dans le fichier <code>cast.js</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">var debug = true;
+</code></pre></div>
+<p>Indiquez un niveau de log égal à <code>NONE</code> cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
+
+<p>Vous pouvez lancer à tout moment le serveur en local en exécutant le serveur node :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">node server.js
+</code></pre></div>
+<p>Puis en vous rendant sur :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">http://localhost:8080/receiver/index.html
+</code></pre></div>
+<p>Affichez la console pour debugger le receiver.</p>
+
+<h3>Initialisation</h3>
+
+<p>Récupérez une instance du <code>CastReceiverManager</code>.</p>
+
+<p>Lancez l&#39;application cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager">CastReceiver</a></p>
+
+<h3>Connection d&#39;un joueur</h3>
+
+<p>Une fois l&#39;application lancée, les événements lors des connections, des déconnections, des messages, etc. peuvent être écoutés.</p>
+
+<p>Complétez le code dans la méthode <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager#onSenderConnected">onSenderConnected</a>
+pour ajouter une joueur au labyrinthe cf.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">game.js &gt; addPlayer(playerId)
+</code></pre></div>
+<h3>Reception d&#39;un message</h3>
+
+<p>L&#39;application Chromecast est capable de recevoir des messages.</p>
+
+<p>Pour ce faire vous devez récupérer un <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastMessageBus">CastMessageBus</a></p>
+
+<p>Cet objet possède une méthode <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastMessageBus#onMessage">onMessage</a> qui permet
+d&#39;écouter les messages.</p>
+
+<p>Completez la méthode onMessage pour que le joueur se déplace si le message correspond à l&#39;une des chaines de caractères suivantes :</p>
+
+<ul>
+<li>up</li>
+<li>down</li>
+<li>right</li>
+<li>left</li>
+</ul>
+
+<p>cf. méthode :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">game.js &gt; handleKeypress(direction, id);
+</code></pre></div>
+<h3>Envoi d&#39;un message vers les senders</h3>
+
+<p>L&#39;application Chromecast peut également envoyer des messages aux clients.</p>
+
+<p>Pour cela l&#39;objet <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastMessageBus">CastMessageBus</a> possède une méthode <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastMessageBus#send">send</a></p>
+
+<p>Faites en sorte qu&#39;à la connection d&#39;un joueur le receiver transmette un message vers le sender pour lui indique sa couleur.</p>
+
+<p>NB : la méthode <code>game.js &gt; addPlayer(playerId)</code> renvoie une couleur.</p>
+
+<p>Le format attendu est un objet contenant un champ <code>color</code> et la valeur de la couleur.</p>
+
+        </section>
+        <aside id="sidebar">
+            <a href="https://github.com/xebia-france/workshop-cast-maze/archive/master.zip" class="button">
+                <small>Download</small>
+                .zip file
+            </a>
+            <a href="https://github.com/xebia-france/workshop-cast-maze/archive/master.tar.gz" class="button">
+                <small>Download</small>
+                .tar.gz file
+            </a>
+
+            <p class="repo-owner"><a href="https://github.com/xebia-france/workshop-cast-maze">architect-theme</a> is
+                maintained by <a href="https://github.com/xebia-france">xebia-france</a>.</p>
+
+            <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme
+                by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+
+            <p>Project initialized by <br/>
+                Thomas G <a href="https://twitter.com/Tom404_">@Tom404_</a><br/>
+                Jean-Christophe P<br/>
+                Benjamin L <a href="https://twitter.com/benjlacroix">@benjlacroix</a></p>
+        </aside>
+    </div>
+</div>
+<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

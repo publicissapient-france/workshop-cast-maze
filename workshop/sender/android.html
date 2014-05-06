@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/zenburn.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/pygment_trac.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css" media="screen"/>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Multi-player Bomberman sample with Chromecast</title>
+</head>
+
+<body>
+<header>
+    <div class="inner">
+        <h1>Multi-player Bomberman sample</h1>
+
+        <h2>with Chromecast</h2>
+        <a target="_blank" href="https://github.com/xebia-france/workshop-cast-maze" class="button">
+            <small>View project on</small>
+            GitHub</a>
+    </div>
+</header>
+
+<div id="content-wrapper">
+    <div class="inner clearfix">
+        <section id="main-content">
+            <h2>Outils</h2>
+
+<p>Google Cast API Reference : <a href="https://developers.google.com/cast/docs/reference/">docs</a></p>
+
+<h2>Setup</h2>
+
+<p>Clonez le dépôt :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"> $ git clone https://github.com/xebia-france/workshop-cast-maze.git
+</code></pre></div>
+<h2>Coding party</h2>
+
+<p>Importer le projet gradle suivant dans votre IDE favori</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">sender/android
+</code></pre></div>
+<p>Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur sur la chromecast.</p>
+
+<h2>Initialisation du mediaRouter</h2>
+
+<p>Dans le onCreate() de l&#39;activité récupérer l&#39;instance du <a href="https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#getInstance(android.content.Context)">MediaRouter</a>.
+Ensuite créer un <a href="http://developer.android.com/reference/android/support/v7/media/MediaRouteSelector.Builder.html">MediaRouteSelector</a> et via la méthode addControlCategory, ajouter la catégorie suivante:</p>
+
+<pre><code>CastMediaControlIntent.categoryForCast(getString(R.string.app_id))</code></pre>
+
+<p>Cela va permettre d&#39;identifier le receiver souhaité pour notre application.</p>
+
+<p>Créer une classe interne MediaRouterCallback qui hérite de <a href="https://developer.android.com/reference/android/support/v7/media/MediaRouter.Callback.html">MediaRouter.Callback</a>, pour être
+informé quand l&#39;utilisateur aura choisi une route (i.e. un device). Laissez les méthodes onRouteSelected et onRouteUnselected vides pour le moment.</p>
+
+<p>Pour finir dans le onResume() demarrer la recherche de devices grâce à la méthode <a href="https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#addCallback(android.support.v7.media.MediaRouteSelector,%20android.support.v7.media.MediaRouter.Callback,%20int)">addCallback</a>
+avec comme flag <a href="https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#CALLBACK_FLAG_PERFORM_ACTIVE_SCAN">MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN</a></p>
+
+<h2>Prérequis</h2>
+
+<p>Créer les méthodes :</p>
+
+<pre><code>public void launchReceiver() {
+}
+public void teardown() {
+}</code></pre>
+
+<p>Nous les implémenterons un peu plus loin dans l&#39;exercice.</p>
+
+<h2>Sélection de la route</h2>
+
+<p>Lorsque l&#39;utilisateur choisit une route, le méthode onRouteSelected de votre MediaRouterCallback est appelée. Récupérer le
+device sélectionné grâce à :
+<pre><code class="java">mSelectedDevice = CastDevice.getFromBundle(info.getExtras());</code></pre>
+Dans la foulée appeler la méthode launchReceiver().
+A l&#39;inverse dans le callback onRouteUnSelected déclencher la méthode teardown() afin de libérer les resources et réinitialiser la variable mSelectedDevice.</p>
+
+<h2>Connexion au play services</h2>
+
+<p>Avant de pouvoir communiquer avec la chromecast, il faut d&#39;abord se connecter au play services. Utiliser le builder du <a href="http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html">GoogleApiClient</a>
+utiliser la méthode addApi pour ajouter la feature <a href="http://developer.android.com/reference/com/google/android/gms/cast/Cast.html#API">Cast.API</a> en n&#39;oubliant pas de passer les CastOptions suivantes:
+<pre><code class="java">Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
+    .builder(mSelectedDevice, new Cast.Listener() {
+        @Override
+        public void onApplicationDisconnected(int errorCode) {
+            Log.d(TAG, &quot;application has stopped&quot;);
+            teardown();
+        }
+    });</code></pre></p>
+
+<p>Ajouter les listeners pour le ConnectionCallbacks et le OnConnectionFailed (une impélementation est fournie). Ensuite démarrer la connexion avec la méthode <a href="http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.html#connect()">connect</a></p>
+
+<h2>Démarrage du receiver</h2>
+
+<p>La gestion de la reconnection étant quelque peu complexe, elle vous est fournie. Cependant, il vous faut maintenant démarrer le receiver.
+Utiliser la méthode <a href="http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#launchApplication(com.google.android.gms.common.api.GoogleApiClient,%20java.lang.String)">launchApplication</a> pour le démarrer (où rejoindre une session s&#39;il est déjà lancé) puis enregistrer un <a href="http://developer.android.com/reference/com/google/android/gms/common/api/ResultCallback.html">ResultCallback</a>.</p>
+
+<h2>Verification du status de la connexion</h2>
+
+<p>Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre connexion. C&#39;est généralement ici que l&#39;on enregistre un channel pour recevoir des messages du receiver. Dans notre cas nous ne n&#39;utiliserons pas cette fonctionnalité. Un exemple est cependant fourni dans la solution de l&#39;exercice.</p>
+
+<h2>Envoi d&#39;un message</h2>
+
+<p>Le receiver n&#39;accepte que 4 actions : left, up, right, down. Pour lui envoyer un message il ne reste plus qu&#39;à utiliser la méthode  <a href="http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#sendMessage(com.google.android.gms.common.api.GoogleApiClient,%20java.lang.String,%20java.lang.String)">Cast.CastApi.sendMessage</a>. Le namespace de notre application est :
+<pre><code>urn:x-cast:fr.xebia.workshop.cast.maze</code></pre>
+Vous pouvez attacher un listener pour vérifier si votre message a bien été envoyé. Mapper le clic de vos boutons pour qu&#39;il envoie l&#39;action correspondante au receiver.</p>
+
+<h2>Teardown</h2>
+
+<p>Dans la méthode teardown <a href="http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#leaveApplication(com.google.android.gms.common.api.GoogleApiClient)">quitter le receiver</a>.</p>
+
+<h2>La touche finale</h2>
+
+<p>Vous aller bientôt pouvoir jouer! La dernière étape consiste à afficher le logo cast dans l&#39;action bar. Créer un menu avec le code suivant :
+<pre><code class="xml">&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+                             xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+                             xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+                             tools:context=&quot;fr.xebia.workshop.cast.maze.MazeActivity&quot;&gt;
+       &lt;item
+               android:id=&quot;@+id/media<em>route</em>menu<em>item&quot;
+               android:title=&quot;@string/media</em>route<em>menu</em>title&quot;
+               app:actionProviderClass=&quot;android.support.v7.app.MediaRouteActionProvider&quot;
+               app:showAsAction=&quot;always&quot;/&gt;
+&lt;/menu&gt;</code></pre></p>
+
+<p>Utiliser le dans le onCreateOptionsMenu et ajouter le code suivant :</p>
+
+<pre><code class="java">MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+// Set the MediaRouteActionProvider selector for device discovery.
+mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);</code></pre>
+
+<h2>Go</h2>
+
+<p>Essayer de trouver la sortie du labyrinthe!</p>
+
+        </section>
+        <aside id="sidebar">
+            <a href="https://github.com/xebia-france/workshop-cast-maze/archive/master.zip" class="button">
+                <small>Download</small>
+                .zip file
+            </a>
+            <a href="https://github.com/xebia-france/workshop-cast-maze/archive/master.tar.gz" class="button">
+                <small>Download</small>
+                .tar.gz file
+            </a>
+
+            <p class="repo-owner"><a href="https://github.com/xebia-france/workshop-cast-maze">architect-theme</a> is
+                maintained by <a href="https://github.com/xebia-france">xebia-france</a>.</p>
+
+            <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme
+                by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+
+            <p>Project initialized by <br/>
+                Thomas G <a href="https://twitter.com/Tom404_">@Tom404_</a><br/>
+                Jean-Christophe P<br/>
+                Benjamin L <a href="https://twitter.com/benjlacroix">@benjlacroix</a></p>
+        </aside>
+    </div>
+</div>
+<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
