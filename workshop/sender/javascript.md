@@ -43,8 +43,8 @@ Lorsque la session est initialisée, la méthode <code>sessionListener(e)</code>
 
 Sauvegarder la session ainsi récupérée.
 
-NB : une fois la session initialisée, la méthode <code>receiverListener(e)</code> permet de
-récupérer les messages envoyés par la chromecast.
+NB : la méthode [receiverListener(e)](https://developers.google.com/cast/docs/reference/chrome/chrome.cast.ApiConfig#receiverListener)
+est invoquée lorsque qu'un receiver qui supporte l'application demandée est connu ou change.
 
 Lancer le serveur NodeJS (racine du projet) :
 
@@ -70,7 +70,7 @@ Retournez sur la page web :
 
     http://localhost:8080/sender/js/index.html
 
-Et vérifiez qu'en cliquant sur le bouton <code>Launch app</code> un nouveau joueur apparait bien sur
+Et vérifiez qu'en cliquant sur le bouton <code>Launch app</code> un nouveau joueur apparaît bien sur
  l'écran connecté à la chromecast.
 
 Félicitation la connection à la chromecast est réussie ! Allons
@@ -97,9 +97,11 @@ Félicitation ! Le joueur bouge ! Finissez le labyrinthe au plus vite :).
 
 La chromecast peut aussi communiquer avec ses clients en utilisant des messages.
 
+Pour cela, il faut ajouter un listener à la session cf [addMessageListener](https://developers.google.com/cast/docs/reference/chrome/chrome.cast.Session#addMessageListener)
+
 Essayez de récupérer la couleur du joueur après la connection :
 
-Cela se passe dans la méthode <code>receiverListener(e)</code>, coder la conversion du paramètre en JSON et la vérification de l'existence du champ <code>color</code>
+Cela se passera dans la méthode <code>onReceiverMessage(e)</code>, coder la conversion du paramètre en JSON et la vérification de l'existence du champ <code>color</code>
 
     e.color
 Changez la couleur du fond par celle reçue :
