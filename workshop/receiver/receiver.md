@@ -4,7 +4,11 @@ layout: main-layout
 
 {% include asset.md %}
 
-{% include setup.md %}
+## Setup
+
+Faites un fork du dépôt puis un git clone :
+
+     $ https://github.com/xebia-france/workshop-cast-maze.git
 
 ## Coding party
 

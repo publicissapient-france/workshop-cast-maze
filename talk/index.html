@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="css/reveal.min.css">
     <link rel="stylesheet" href="css/theme/xebia.css" id="theme">
 
-    <!-- For syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
 
-    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <link rel="stylesheet" href="css/app.css">
+
     <script>
         if (window.location.search.match(/print-pdf/gi)) {
             var link = document.createElement('link');
@@ -61,20 +61,69 @@
         <section>
             <section>
                 <h2>Workflow</h2>
+
+                <p>Diffuser</p>
+
+                <p>Contrôler</p>
+
+                <img src="img/img_overview.png" height="50%" width="50%">
             </section>
             <section>
                 <h2>Overview</h2>
+
+                <p>Sender</p>
+
+                <p>API pour iOS, Android & Javascript</p>
+
+                <p>Receiver</p>
+
+                <p>Gère les connections entre les app sender & le receiver</p>
             </section>
             <section>
                 <h2>Receiver</h2>
+
+                <p>Optimisé pour diffuser un contenu vidéo</p>
+
+                <p>Diffusion en continu (même si le sender est déconnecté)</p>
+
+                <p>Default Media Receiver</p>
+
+                <p>Custom Media Receiver</p>
+
+                <p>Custom Receiver qui implémente l'API Receiver</p>
+
+                <p>Liste de sender id</p>
             </section>
             <section>
                 <h2>Sender</h2>
+
+                <p>Connexion à une chromecast puis envoi de messages</p>
+
+                <p>Sender id</p>
+
+                <p>Namespace</p>
+
+                <p>Connexion</p>
+
+                <p>Envoi de messages</p>
+
+                <p>Reception de messages</p>
             </section>
         </section>
 
         <section>
             <h2>Technique</h2>
+
+            <ul>
+                <li>HDMI, CEC</li>
+                <li>1080p</li>
+                <li>802.11b/g/n</li>
+                <li>WEP, WPA/WPA2</li>
+                <li>USB</li>
+                <li>1 coeur</li>
+                <li>512 MB</li>
+                <li>Chrome OS (simple)</li>
+            </ul>
         </section>
 
         <section>
@@ -82,15 +131,76 @@
         </section>
 
         <section>
-            <h2>Best practices</h2>
+            <section>
+                <h2>Considerations</h2>
+
+                <p>Chromecast, c'est bien :) mais ce n'est pas puissant</p>
+
+                <p>Receiver léger</p>
+
+                <p>Pas de tab</p>
+
+                <p>de popups</p>
+
+                <p>de nouvelles fenêtres</p>
+
+                <p>de formulaires</p>
+
+                <p>WebGL Niet</p>
+
+                <p>Chrome Native Client Niet</p>
+
+                <p>Extensions Chrome Niet</p>
+            </section>
+            <section>
+                <h2>Principes de conception</h2>
+            </section>
+            <section>
+                <h2>Receiver</h2>
+
+                <p>Pas d'intéraction avec l'utilisateur (le faire côté sender)</p>
+
+                <p>L'action se déroule au centre de la télé !</p>
+
+                <p>Ne pas penser application machine</p>
+
+                <img src="img/img_jira_tv.jpeg" height="25%" width="25%">
+
+                <p>Mais film</p>
+
+                <img src="img/img_redorbit_tv.jpg" height="25%" width="25%">
+            </section>
+            <section>
+                <h2>Sender</h2>
+
+                <p>Le sender contient toutes les interactions avec l'utilisateur</p>
+
+                <p>Préféré un mode paysage qui se prête mieux au format télécommande</p>
+
+                <img src="img/img_candycrush.jpg" height="40%" width="40%">
+            </section>
         </section>
 
         <section>
-            <h2>Boundaries</h2>
+            <section>
+                <h2>Boundaries</h2>
+
+                <p>Compliant web</p>
+
+                <p>HTML</p>
+
+                <p>CSS</p>
+
+                <p>JS</p>
+            </section>
         </section>
 
         <section>
             <h2>Coding party ?</h2>
+
+            <p>Bomberman Sample</p>
+
+            <img src="img/img_board.png" height="50%" width="50%">
         </section>
 
     </div>
@@ -101,24 +211,14 @@
 <script src="js/reveal.min.js"></script>
 
 <script>
-
-    // Full list of configuration options available here:
-    // https://github.com/hakimel/reveal.js#configuration
     Reveal.initialize({
         controls: true,
         progress: true,
         history: true,
         center: true,
         slideNumber: true,
-
-        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-        // Parallax scrolling
-        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-        // parallaxBackgroundSize: '2100px 900px',
-
-        // Optional libraries used to extend on reveal.js
+        theme: Reveal.getQueryHash().theme,
+        transition: Reveal.getQueryHash().transition || 'default',
         dependencies: [
             { src: 'lib/js/classList.js', condition: function () {
                 return !document.body.classList;
