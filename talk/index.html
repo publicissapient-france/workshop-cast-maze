@@ -60,13 +60,15 @@
 
         <section>
             <section>
-                <h2>Workflow</h2>
+               <h2>Fonctionnement</h2>
 
-                <p>Diffuser</p>
+               <p>clé HDMI</p>
+               <ul style="vertical-align: top;">
+                  <li>Diffuse du contenu sur la TV</li>
+                  <li>Contrôlé depuis des devices</li>
 
-                <p>Contrôler</p>
-
-                <img src="img/img_overview.png" height="50%" width="50%">
+               </ul>
+               <img width="65%" height="65%" src="img/img_overview.png">
             </section>
             <section>
                 <h2>Overview</h2>
@@ -112,7 +114,7 @@
         </section>
 
         <section>
-            <h2>Technique</h2>
+            <h2>Fiche technique</h2>
 
             <ul>
                 <li>HDMI, CEC</li>
@@ -127,31 +129,42 @@
         </section>
 
         <section>
-            <h2>Concurrence</h2>
+            <section>
+               <h2>Concurrence</h2>
+            </section>
+            <section>
+               <h2>"Directe"</h2>
+               
+               <ul>
+                  <li>Asus Miracast Dongle</li>
+                  <li>Belkin Miracast</li>
+                  <li>Toute TV disposant supportant Miracast/Wi-Display</li>
+               </ul>
+               
+               <ul style="list-style:none">
+                  <li style="display:inline-block"><img src="img/asus_miracast.jpeg" width="450" /></li>
+                  <li style="display:inline-block"><img src="img/belkin_miracast.png" width="450"/></li>
+               </ul>
+            </section>
+            
+            <section>
+               <h2>"Indirecte"</h2>
+               
+               <ul>
+                  <li>Amazon Fire TV</li>
+                  <li>Apple TV</li>
+                  <li>Roku</li>
+               </ul>
+
+               <ul style="list-style:none">
+                  <li style="display:inline-block"><img src="img/AmazonFireTV.jpg" width="295" /></li>
+                  <li style="display:inline-block"><img src="img/Apple-TV.jpg" width="295"/></li>
+                  <li style="display:inline-block"><img src="img/roku.jpg" width="295"/></li>
+               </ul>
+            </section>
         </section>
 
         <section>
-            <section>
-                <h2>Considerations</h2>
-
-                <p>Chromecast, c'est bien :) mais ce n'est pas puissant</p>
-
-                <p>Receiver léger</p>
-
-                <p>Pas de tab</p>
-
-                <p>de popups</p>
-
-                <p>de nouvelles fenêtres</p>
-
-                <p>de formulaires</p>
-
-                <p>WebGL Niet</p>
-
-                <p>Chrome Native Client Niet</p>
-
-                <p>Extensions Chrome Niet</p>
-            </section>
             <section>
                 <h2>Principes de conception</h2>
             </section>
@@ -185,13 +198,18 @@
             <section>
                 <h2>Boundaries</h2>
 
-                <p>Compliant web</p>
+               <p>Chromecast, c'est bien :) mais ce n'est pas puissant</p>
 
-                <p>HTML</p>
-
-                <p>CSS</p>
-
-                <p>JS</p>
+               <ul>
+                  <li>Receiver apps uniquement en HTML/JS</li>
+                  <li>Pas de popup</li>
+                  <li>Pas de tabs/1 seul Receiver à la fois</li>
+                  <li>Impossible de changer la Receiver App / défaut</li>
+                  <li>Pas de WebGL</li>
+                  <li>Pas de Chrome Native Client ni d'extensions</li>
+                  <li>Peu de codecs vidéo</li>
+                  <li>Pas de pwd</li>
+               </ul>
             </section>
         </section>
 
