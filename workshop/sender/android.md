@@ -67,8 +67,8 @@ Utiliser la méthode [launchApplication](http://developer.android.com/reference/
 
 ## Verification du status de la connexion et récupération de la couleur du joueur
 
-Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre connexion. C'est généralement ici que l'on enregistre un channel pour recevoir des messages du receiver. Dans notre cas le receiver vas nous envoyer un message
-précisant la couleur de notre joueur. Utiliser la méthode [Cast.CastApi.setMessageReceivedCallbacks](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#setMessageReceivedCallbacks\(com.google.android.gms.common.api.GoogleApiClient, java.lang.String, com.google.android.gms.cast.Cast.MessageReceivedCallback\)). Le namespace de notre application est :
+Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre connexion. C'est généralement ici que l'on enregistre un channel pour recevoir des messages du receiver si la connexion est en succès sinon on appelle la méthode teardown(). Dans notre cas le receiver vas nous envoyer un message
+précisant la couleur de notre joueur. Utiliser la méthode [Cast.CastApi.setMessageReceivedCallbacks](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#setMessageReceivedCallbacks\(com.google.android.gms.common.api.GoogleApiClient, java.lang.String, com.google.android.gms.cast.Cast.MessageReceivedCallback\)) pour enregistrer votre channel. Le namespace de notre application est :
 <pre><code>urn:x-cast:fr.xebia.workshop.cast.maze</code></pre>
 
 Dans le onMessageReceived de votre callback, récupérer votre couleur. Pour information, un exemple de message est le suivant:
@@ -85,7 +85,7 @@ Vous pouvez attacher un listener pour vérifier si votre message a bien été en
 
 ## Teardown
 
-Dans la méthode teardown [quitter le receiver](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#leaveApplication\(com.google.android.gms.common.api.GoogleApiClient\)) puis désinscrire votre channel.
+Dans la méthode teardown [quitter le receiver](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#leaveApplication\(com.google.android.gms.common.api.GoogleApiClient\)) puis désinscrire votre channel. Ajouter les appels à la méthode teardown dans les endroits nécessaires (suivre les TODO).
 
 ## La touche finale
 
