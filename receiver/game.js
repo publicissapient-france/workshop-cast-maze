@@ -12,6 +12,7 @@ function newMaze() {
     }
     document.getElementById('maze').remove();
     document.getElementById('maze-container').innerHTML = "<canvas oncontextmenu='return false;' id='maze' width='750' height='750'></canvas>";
+    window.checkDebug();
     canvas = document.getElementById('maze');
     context = canvas.getContext('2d');
     context.font = "bold 20px sans-serif";
