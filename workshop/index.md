@@ -10,3 +10,5 @@ layout: main-layout
 # Ou choisissez le serveur (receiver)
 
 * [Javascript](receiver/receiver.html)
+
+{% include further.md %}
