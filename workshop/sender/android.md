@@ -65,13 +65,13 @@ Ajouter les listeners pour le ConnectionCallbacks et le OnConnectionFailed (une 
 La gestion de la reconnection étant quelque peu complexe, elle vous est fournie. Cependant, il vous faut maintenant démarrer le receiver.
 Utiliser la méthode [launchApplication](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#launchApplication\(com.google.android.gms.common.api.GoogleApiClient, java.lang.String\)) pour le démarrer (où rejoindre une session s'il est déjà lancé) puis enregistrer un [ResultCallback](http://developer.android.com/reference/com/google/android/gms/common/api/ResultCallback.html).
 
-## Verification du status de la connexion
+## Verification du status de la connexion et récupération de la couleur du joueur
 
 Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre connexion. C'est généralement ici que l'on enregistre un channel pour recevoir des messages du receiver. Dans notre cas le receiver vas nous envoyer un message
 précisant la couleur de notre joueur. Utiliser la méthode [Cast.CastApi.setMessageReceivedCallbacks](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#setMessageReceivedCallbacks\(com.google.android.gms.common.api.GoogleApiClient, java.lang.String, com.google.android.gms.cast.Cast.MessageReceivedCallback\)). Le namespace de notre application est :
 <pre><code>urn:x-cast:fr.xebia.workshop.cast.maze</code></pre>
 
-Quant au format du message, voici un exemple:
+Dans le onMessageReceived de votre callback, récupérer votre couleur. Pour information, un exemple de message est le suivant:
 <pre><code>{"color":"#0099CC"}</code></pre>
 
 Un utilitaire permettant de faire la conversion de l'hexa vers le rgb vous ait fourni. Maintenant utiliser la méthode [setBackgroundDrawable](http://developer.android.com/reference/android/view/Window.html#setBackgroundDrawable\(android.graphics.drawable.Drawable\)) de votre window pour mettre votre couleur en arrière plan.
@@ -85,7 +85,7 @@ Vous pouvez attacher un listener pour vérifier si votre message a bien été en
 
 ## Teardown
 
-Dans la méthode teardown [quitter le receiver](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#leaveApplication\(com.google.android.gms.common.api.GoogleApiClient\)).
+Dans la méthode teardown [quitter le receiver](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#leaveApplication\(com.google.android.gms.common.api.GoogleApiClient\)) puis désinscrire votre channel.
 
 ## La touche finale
 
