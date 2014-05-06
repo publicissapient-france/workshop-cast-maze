@@ -19,7 +19,9 @@
 @implementation MazeChannel
 
 - (id)initWithPlayer:(MazePlayer *)player {
-    if (!(self = [super initWithNamespace:MAZE_NAMESPACE]))
+   // @TODO
+   // @FIXME use workshop namespace
+   if (!(self = [super initWithNamespace:@""]))
         return nil;
 
     self.player = player;
@@ -30,8 +32,7 @@
 - (void)didReceiveTextMessage:(NSString *)message {
     NSDictionary *data = [GCKJSONUtils parseJSON:message];
 
-    if (data[@"color"])
-        self.player.color = [UIColor colorFromHexString:data[@"color"]];
+   // @TODO update player color
 }
 
 - (void)move:(MazeMove)movment {
@@ -58,8 +59,10 @@
          break;
    }
 
-   if (movmentMsg)
+   if (movmentMsg) {
+      NSLog(@"Sending move %@", movmentMsg);
       [self sendTextMessage:movmentMsg];
+   }
 }
 
 @end

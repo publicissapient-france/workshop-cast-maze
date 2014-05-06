@@ -14,11 +14,25 @@
 #define APP_ID @"8D7FEAA1"
 
 @interface MazeViewController ()<UIActionSheetDelegate>
+/**
+ * Scanner object to look for Chromecast devices on network
+ */
 @property(nonatomic, strong)GCKDeviceScanner       *deviceScanner;
+/**
+ * Manage the chromecast device on which we are connected
+ */
 @property(nonatomic, strong)GCKDeviceManager       *deviceManager;
+/**
+ * Channel object to send messages to our Maze game
+ */
 @property(nonatomic, strong)MazeChannel            *mazeChannel;
+/**
+ * Player which is currently (or not) playing the game
+ */
 @property(nonatomic, strong)MazePlayer              *player;
-
+/**
+ * Chromecast button into the navigation bar
+ */
 @property(nonatomic, strong)IBOutlet UIButton      *castBtn;
 
 @end
@@ -29,9 +43,7 @@
    if (!(self = [super initWithCoder:aDecoder]))
       return nil;
 
-   self.deviceScanner = [[GCKDeviceScanner alloc] init];
-
-   [self.deviceScanner addListener:self];
+   // @TODO Create a device scanner
 
    return self;
 }
@@ -39,7 +51,7 @@
 - (void)viewDidLoad {
    self.view.delegate = self;
 
-   [self.deviceScanner startScan];
+   // @TODO Start scanning for any Chromecast device
    [self reloadNavbar];
 }
 
@@ -58,7 +70,9 @@
 - (void)deviceManagerDidConnect:(GCKDeviceManager *)deviceManager {
    NSLog(@"Connected to device!");
 
-   [self.deviceManager launchApplication:APP_ID];
+   // @TODO
+   // @FIXME launch workshop using its app id
+   [self.deviceManager launchApplication:@""];
    [self reloadNavbar];
 }
 
@@ -69,9 +83,9 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
    NSLog(@"Joined <%@>. Enjoy!", applicationMetadata.applicationName);
 
     self.player = [MazePlayer new];
-    self.mazeChannel = [[MazeChannel alloc] initWithPlayer:self.player];
 
-    [self.deviceManager addChannel:self.mazeChannel];
+    // @TODO Add a new channel to the device manager
+    // This channel must allow us to send our custom messages for the workshop game (maze)
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager didDisconnectFromApplicationWithError:(NSError *)error {
@@ -93,8 +107,8 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 
 #pragma mark - View
 
-- (void)mazeView:(MazeView *)view selectedMove:(MazeMove)movment {
-   [self.mazeChannel move:movment];
+- (void)mazeView:(MazeView *)view selectedMove:(MazeMove)move {
+   // @TODO Send move to Chromecast
 }
 
 - (MazePlayer *)mazeViewPlayer:(MazeView *)view {
@@ -136,9 +150,7 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
                                                     otherButtonTitles:nil];
 
 
-   for (GCKDevice *device in self.deviceScanner.devices) {
-      [devicesSheet addButtonWithTitle:device.friendlyName];
-   }
+   // @TODO Display all devices found by the scanner
 
    // Add Cancel button at the very end
    [devicesSheet addButtonWithTitle:@"Cancel"];
@@ -166,12 +178,8 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 - (void)onConnectToCastDevice:(GCKDevice *)device {
    NSBundle *bundle = [NSBundle mainBundle];
 
-   self.deviceManager = [[GCKDeviceManager alloc]  initWithDevice:device
-                                                clientPackageName:bundle.bundleIdentifier];
-
-   self.deviceManager.delegate = self;
-
-   [self.deviceManager connect];
+   // @TODO Build a device manager for the selected device
+   // @TODO Connect to the device through the manager
 }
 
 - (void)onDisconnectToDevice {

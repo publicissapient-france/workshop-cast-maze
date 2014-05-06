@@ -22,8 +22,6 @@
 @implementation MazeView
 
 - (void)awakeFromNib {
-   // For TP only
-   // You should do custom classes in that case
    self.upBtn.tag = MazeMoveUp;
    self.downBtn.tag = MazeMoveDown;
    self.leftBtn.tag = MazeMoveLeft;
@@ -38,6 +36,14 @@
 
 - (IBAction)onPadTouched:(UIButton *)sender {
    [self.delegate mazeView:self selectedMove:sender.tag];
+}
+
+- (void)setDelegate:(id<MazeViewDelegate>)delegate {
+   if (delegate == _delegate)
+      return;
+
+   _delegate = delegate;
+   [self reload];
 }
 
 @end
