@@ -110,4 +110,8 @@ Déconnectez-vous puis reconnectez-vous à nouveau, vérifiez que la couleur du 
 
 Bravo ! Vous avez réussi à recevoir des messages depuis la chromecast :).
 
-{% include next-server.md %}
+### Go
+
+Essayez de finir le labyrinthe !
+
+{% include next.md %}

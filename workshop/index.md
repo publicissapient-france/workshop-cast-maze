@@ -8,3 +8,5 @@ layout: main-layout
 * [Android](sender/android.html)
 
 # Ou choisissez le serveur (receiver)
+
+* [Javascript](receiver/receiver.html)
