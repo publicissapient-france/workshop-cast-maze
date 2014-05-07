@@ -22,7 +22,7 @@ $(document).ready(function () {
         window.castReceiverManager.setApplicationState("Application status is ready...");
     };
 
-    window.messageBus = cast.receiver.CastReceiverManager.getInstance().getCastMessageBus("urn:x-cast:fr.xebia.workshop.cast.maze");
+    window.messageBus = window.castReceiverManager.getCastMessageBus("urn:x-cast:fr.xebia.workshop.cast.maze");
 
     /**
      * When sender connected
@@ -54,7 +54,7 @@ $(document).ready(function () {
         
     };
 
-    //window.castReceiverManager.start(cast.receiver.CastReceiverManager.Config());
+    window.castReceiverManager.start(cast.receiver.CastReceiverManager.Config());
     log('Receiver manager started');
 
     /**
