@@ -39,14 +39,8 @@
 
 @implementation MazeViewController
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-   if (!(self = [super initWithCoder:aDecoder]))
-      return nil;
-
-   // @TODO Create a device scanner
-
-   return self;
-}
+// @TODO Create a Ctor (choose the right one)
+// and instantiate a scanner
 
 - (void)viewDidLoad {
    self.view.delegate = self;
@@ -72,7 +66,7 @@
 
    // @TODO
    // @FIXME launch workshop using its app id
-   [self.deviceManager launchApplication:@""];
+
    [self reloadNavbar];
 }
 
@@ -83,9 +77,9 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
    NSLog(@"Joined <%@>. Enjoy!", applicationMetadata.applicationName);
 
     self.player = [MazePlayer new];
-
-    // @TODO Add a new channel to the device manager
-    // This channel must allow us to send our custom messages for the workshop game (maze)
+    
+    // @TODO Create a maze channel with our player
+    // and add it to the device manager
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager didDisconnectFromApplicationWithError:(NSError *)error {
@@ -143,20 +137,7 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 }
 
 - (void)onChooseCastDevice:(UIButton *)sender {
-   UIActionSheet *devicesSheet = [[UIActionSheet alloc] initWithTitle:@"Choose your device"
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:nil];
-
-
-   // @TODO Display all devices found by the scanner
-
-   // Add Cancel button at the very end
-   [devicesSheet addButtonWithTitle:@"Cancel"];
-   devicesSheet.cancelButtonIndex = devicesSheet.numberOfButtons - 1;
-
-   [devicesSheet showInView:self.view];
+    // @TODO Implement me :)
 }
 
 - (void)onShowSelectedDevice:(id)sender {
@@ -177,6 +158,8 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
 
 - (void)onConnectToCastDevice:(GCKDevice *)device {
    NSBundle *bundle = [NSBundle mainBundle];
+
+    NSLog(@"Connecting to device <%@>", device.friendlyName);
 
    // @TODO Build a device manager for the selected device
    // @TODO Connect to the device through the manager

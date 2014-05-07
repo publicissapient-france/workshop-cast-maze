@@ -20,7 +20,7 @@
 
 - (id)initWithPlayer:(MazePlayer *)player {
    // @TODO
-   // @FIXME use workshop namespace
+   // @FIXME use maze namespace
    if (!(self = [super initWithNamespace:@""]))
         return nil;
 
@@ -32,37 +32,12 @@
 - (void)didReceiveTextMessage:(NSString *)message {
     NSDictionary *data = [GCKJSONUtils parseJSON:message];
 
-   // @TODO update player color
+   if (data[@"color"])
+       self.player.color = [UIColor colorFromHexString:data[@"color"]];
 }
 
 - (void)move:(MazeMove)movment {
-   NSString *movmentMsg = nil;
-
-   switch (movment) {
-      case MazeMoveDown:
-         movmentMsg = @"down";
-         break;
-
-      case MazeMoveUp:
-         movmentMsg = @"up";
-         break;
-
-      case MazeMoveLeft:
-         movmentMsg = @"left";
-         break;
-
-      case MazeMoveRight:
-         movmentMsg = @"right";
-         break;
-
-      default:
-         break;
-   }
-
-   if (movmentMsg) {
-      NSLog(@"Sending move %@", movmentMsg);
-      [self sendTextMessage:movmentMsg];
-   }
+    // @TODO send Movement text message to device
 }
 
 @end

@@ -6,6 +6,7 @@ layout: main-layout
 
 * [Javascript](sender/javascript.html)
 * [Android](sender/android.html)
+* [iOS](sender/ios.html)
 
 # Ou choisissez le serveur (receiver)
 
