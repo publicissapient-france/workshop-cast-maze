@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         copy: {
             main: {
-                src: ['css/**', 'js/*', 'lib/**', 'plugin/**', 'index.html'], dest: 'dist/talk/', filter: 'isFile'
+                src: ['css/**', 'js/*', 'lib/**', 'plugin/**', 'img/**', 'index.html'], dest: 'dist/talk/', filter: 'isFile'
             }
         },
         'gh-pages': {

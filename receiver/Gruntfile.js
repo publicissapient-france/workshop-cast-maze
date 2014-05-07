@@ -7,8 +7,11 @@ module.exports = function (grunt) {
             main: {
                 src: ['cast.js', 'game.js', 'index.html', 'jquery-1.11.0.min.js'], dest: 'dist/receiver/', filter: 'isFile'
             },
-            dev: {
+            dev2: {
                 src: ['cast.js', 'game.js', 'index.html', 'jquery-1.11.0.min.js'], dest: 'dist/receiver2/', filter: 'isFile'
+            },
+            dev3: {
+                src: ['cast.js', 'game.js', 'index.html', 'jquery-1.11.0.min.js'], dest: 'dist/receiver3/', filter: 'isFile'
             }
         },
         'gh-pages': {
@@ -26,5 +29,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('dist', ['clean', 'copy']);
-    grunt.registerTask('dist-dev', ['clean', 'copy:dev']);
+    grunt.registerTask('dist-dev2', ['clean', 'copy:dev2']);
+    grunt.registerTask('dist-dev3', ['clean', 'copy:dev3']);
 };
