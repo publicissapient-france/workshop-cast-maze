@@ -12,7 +12,7 @@ function checkDebug() {
 
 $(document).ready(function () {
 
-    // TODO debug level
+    // TODO log level
 
     window.castReceiverManager = {}; // TODO get CastReceiverManager
     log('Starting receiver manager');
@@ -61,7 +61,7 @@ $(document).ready(function () {
      * @param msg message to log
      */
     function log(msg) {
-        if (debug) {
+        if (window.debug) {
             var debug = document.getElementById('debug');
             var tmpHTML = debug.innerHTML;
             debug.innerHTML = '';
