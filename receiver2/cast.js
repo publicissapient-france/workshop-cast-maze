@@ -54,7 +54,7 @@ $(document).ready(function () {
         
     };
 
-    window.castReceiverManager.start(cast.receiver.CastReceiverManager.Config());
+    window.castReceiverManager.start({status :  "starting"});
     log('Receiver manager started');
 
     /**
