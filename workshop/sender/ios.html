@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/zenburn.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/pygment_trac.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/app.css" media="screen"/>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Multi-player Bomberman sample with Chromecast</title>
+</head>
+
+<body>
+<header>
+    <div class="inner">
+        <h1>Multi-player Bomberman sample</h1>
+
+        <h2>with Chromecast</h2>
+        <a target="_blank" href="https://github.com/xebia-france/workshop-cast-maze" class="button">
+            <small>View project on</small>
+            GitHub</a>
+    </div>
+</header>
+
+<div id="content-wrapper">
+    <div class="inner clearfix">
+        <section id="main-content">
+            <h2>Outils</h2>
+
+<p>Google Cast API Reference : <a href="https://developers.google.com/cast/docs/reference/">docs</a></p>
+
+<h2>Setup</h2>
+
+<p>Clonez le dépôt :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"> $ git clone https://github.com/xebia-france/workshop-cast-maze.git
+</code></pre></div>
+<h2>Déroulement du TP</h2>
+
+<p>Le TP se déroule en plusieurs étapes qui seront validées soit par des changements d&#39;UI (apparition/disparition d&#39;éléments) soit via des messages dans votre console de log.</p>
+
+<p>Le fichier principal avec lequel vous allez majoritairement travailler est <code>MazeViewController.m</code>. Il contient tous les éléments quant aux différentes étapes nécessaires pour jouer:</p>
+
+<ul>
+<li>Scan des devices</li>
+<li>Connexion au Chromecast</li>
+<li>Envoi des événements de jeu</li>
+</ul>
+
+<p>Tout au long du TP pensez à vous enregistrer en tant que <code>delegate</code> lorsque vous créez vos objets afin de recevoir leurs &quot;notifications&quot;. Pour savoir pour quels objets vous devrez vous définir en tant que delegate vous pouvez regarder <code>MazeViewController.h</code></p>
+
+<h2>Coding Party</h2>
+
+<p>Importer le projet suivant dans Xcode (ou AppCode)</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"> sender/ios
+</code></pre></div>
+<p>Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur sur la Chromecast.</p>
+
+<p>Pour pouvoir se connecter à un Chromecast il faut d&#39;abord scanner le réseau afin de pouvoir en trouver auxquels se connecter.</p>
+
+<p>Ouvrez <code>MazeViewController.m</code> et implémentez le constructeur afin de créer une instance de <code>GCKDeviceScanner</code>. Vérifiez bien que celui-ci est appelé (Breakpoints, NSLog,...)</p>
+
+<p>Dans la méthode <code>viewDidLoad</code>, démarrez le scanner afin qu&#39;il puisse trouver des devices.</p>
+
+<p>Si tout se passe bien vous devriez voir &quot;Device xxx found&quot; dans votre console. Il est temps de s&#39;y connecter !</p>
+
+<h3>Connexion à Chromecast</h3>
+
+<p>On va d&#39;abord afficher la liste de tous les Chromecast trouvés afin de pouvoir choisir celui auquel on va se connecter. Pour se faire:</p>
+
+<ol>
+<li>Implémenter la méthode <code>onChooseCastDevice</code>. Elle devra:
+
+<ul>
+<li>Créer une <code>UIActionSheet</code> avec le titre &quot;Choose your device&quot;</li>
+<li>Lister tous les devices dans cette UIActionSheet</li>
+<li>Afficher un bouton &quot;Cancel&quot;. Pour le TP, le bouton devra s&#39;afficher à la FIN de la liste !</li>
+</ul></li>
+<li>Implémenter la méthode <code>onConnectToCastDevice</code>. Elle devra:
+
+<ul>
+<li>Créer un Device Manager pour le device sélectionné</li>
+<li>Se connecter au device</li>
+</ul></li>
+</ol>
+
+<p>Lancez votre application et sélectionnez un device dans en cliquant sur l&#39;icône Chromecast en haut à droite.
+Si tout se passe bien vous devriez voir:</p>
+
+<ol>
+<li>Le message &quot;Connecting to xxx&quot; après avoir seléctionné le device</li>
+<li>Le message &quot;Connected to device!&quot; une fois la connexion avec le device réussie. L&#39;icône Chromecast doit aussi s&#39;être mise à jour</li>
+</ol>
+
+<h3>Connexion à l&#39;application</h3>
+
+<p>Maintenant que la connexion est établie, on va tenter de lancer l&#39;application Maze avec son ID <code>8D7FEAA1</code>. Pour ça vous devez implémenter la méthode <code>deviceManagerDidConnect</code></p>
+
+<p>Le message &quot;Joined Workshop Cast. Enjoy!&quot; vous précisera la réussite (ou pas!) de cette étape ;) </p>
+
+<p>Ok time to (quasi) play!</p>
+
+<h2>Le jeu</h2>
+
+<p>On s&#39;est connecté à Chromecast et on a lancé l&#39;application (le receiver). Great! Maintenant il nous reste encore à pouvoir envoyer/gérer nos messages :)</p>
+
+<h3>Recevoir des messages</h3>
+
+<p>Pour pouvoir communiquer il nous faut créer un <code>MazeChannel</code> dans la méthode <code>deviceManager:didConnectToCastApplication:sessionID:launchedApplication:</code> et l&#39;attacher à notre DeviceManager à l&#39;aide de la méthode <code>addChannel</code>. Pour pouvoir utiliser la classe <code>MazeChannel</code> il faudra d&#39;abord la fixer en lui settant son namespace à la valeur <code>urn:x-cast:fr.xebia.workshop.cast.maze</code></p>
+
+<p>Relancez le projet et connectez-vous à  un Chromecast. Si tout se passe bien vous devriez voir une petite barre de couleur apparaître. Elle représente la couleur de votre personnage dans le jeu ! Vous venez officiellement d&#39;apparaître dans le labyrinthe tout en haut à gauche :) En route pour l&#39;aventure !</p>
+
+<h3>Se déplacer</h3>
+
+<p>Maintenant que vous pouvez discuter avec le receiver il vous reste à lui envoyer des messages afin de vous déplacer dans le labyrinthe. Pour se faire:</p>
+
+<ul>
+<li>Implémenter <code>mazeView:selectedMove:</code>. Elle est appelée à chaque fois que vous appuyez sur une des flèches dans l&#39;UI. Cette méthode doit envoyer à notre channel le mouvement désiré</li>
+<li>Implémenter <code>move</code> dans <code>MazeChannel</code>. Cette méthode doit envoyer le mouvement désiré à notre receiver à l&#39;aide de la méthode <code>sendTextMessage</code>. Les seuls messages que vous pourrez envoyer au receiver sont les NSString <code>up, down, left, right</code></li>
+</ul>
+
+<p>Relancez le projet et une fois connecté, appuyez sur les touches. Vous devriez voir votre joueur se déplacer dans le labyrinthe :)</p>
+
+<h2>Go</h2>
+
+<p>Il ne vous reste plus qu&#39;à essayer de sortir du labyrinthe ! Enjoy!</p>
+
+        </section>
+        <aside id="sidebar">
+            <a href="https://github.com/xebia-france/workshop-cast-maze/archive/master.zip" class="button">
+                <small>Download</small>
+                .zip file
+            </a>
+            <a href="https://github.com/xebia-france/workshop-cast-maze/archive/master.tar.gz" class="button">
+                <small>Download</small>
+                .tar.gz file
+            </a>
+
+            <p class="repo-owner"><a href="https://github.com/xebia-france/workshop-cast-maze">architect-theme</a> is
+                maintained by <a href="https://github.com/xebia-france">xebia-france</a>.</p>
+
+            <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme
+                by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+
+            <p>Project initialized by <br/>
+                Thomas G <a href="https://twitter.com/Tom404_">@Tom404_</a><br/>
+                Jean-Christophe P<br/>
+                Benjamin L <a href="https://twitter.com/benjlacroix">@benjlacroix</a></p>
+        </aside>
+    </div>
+</div>
+<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
