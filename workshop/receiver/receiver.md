@@ -31,7 +31,9 @@ Activez le mode debug dans le fichier <code>cast.js</code>
 
     window.debug = true;
 
-Indiquez un niveau de log égal à <code>NONE</code> cf. [cast.receiver.LoggerLevel](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE)
+Indiquez un niveau de log égal à <code>NONE</code> pour la chromecast ```cast.receiver.logger.setLevelValue()```
+
+cf. [cast.receiver.LoggerLevel](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE)
 
 Vous pouvez lancer à tout moment le serveur en local en exécutant le serveur node :
 
@@ -44,7 +46,9 @@ Affichez la console pour debugger le receiver.
 
 ### Initialisation
 
-Récupérez une instance du <code>CastReceiverManager</code>.
+Récupérez une instance du <code>CastReceiverManager</code>
+
+Utilisez ```getInstance()```.
 
 Lancez l'application cf. [CastReceiver](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager#start)
 
