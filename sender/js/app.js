@@ -1,16 +1,16 @@
 var session = null;
 
-var appId = '8D7FEAA1';
+var applicationID = '8D7FEAA1';
 var namespace = 'urn:x-cast:fr.xebia.workshop.cast.maze';
 
 /**
  * Initialization
  */
 initializeCastApi = function () {
-    var sessionRequest = new chrome.cast.SessionRequest(appId);
+    var sessionRequest = new chrome.cast.SessionRequest(applicationID);
     var apiConfig = new chrome.cast.ApiConfig(
         sessionRequest,
-        onSessionListener,
+        sessionListener,
         receiverListener);
 
     chrome.cast.initialize(apiConfig, onInitSuccess, onError);
@@ -20,26 +20,24 @@ initializeCastApi = function () {
  * Initialization success callback
  */
 function onInitSuccess() {
-    log('init success');
+    log('Init success');
 }
 
 /**
  * Initiation error callback
  */
 function onError() {
-    log('error');
+    log('Error on init');
 }
 
 /**
- * Generic success callback
+ * When a message is received from receiver
+ * @param namespace String
+ * @param message String or JSON
  */
-function onSuccess(msg) {
-    log('success');
-}
-
 function onReceiverMessage(namespace, message) {
     if (message) {
-        log('message: ' + message);
+        log('Message: ' + message);
         var o = JSON.parse(message);
         if (o.color) {
             document.body.style.backgroundColor = o.color;
@@ -47,38 +45,76 @@ function onReceiverMessage(namespace, message) {
     }
 }
 /**
- * Session listener during initialization
+ * When session available (join)
  */
-function onSessionListener(e) {
-    log('new session ' + e.sessionId);
+function sessionListener(e) {
+    log('Join receiver id ' + e.sessionId);
     session = e;
     session.addMessageListener(namespace, onReceiverMessage);
 }
 
 /**
- * On launch application button pressed
+ * On launch application button pressed request a session
  */
 function launchApp() {
-    log('launching app...');
-    chrome.cast.requestSession(onSessionListener, onLaunchError);
+    log('Requesting session...');
+    chrome.cast.requestSession(onRequestSessionSuccess, onLaunchError);
 }
 
+/**
+ * When session requested (create)
+ */
+function onRequestSessionSuccess(e) {
+    log('Session requested id ' + e.sessionId);
+    session = e;
+    session.addMessageListener(namespace, onReceiverMessage);
+}
+
+/**
+ * Report if chrome cast devices are available
+ * @param e
+ */
 function receiverListener(e) {
-    log(JSON.stringify(e));
     if (e === chrome.cast.ReceiverAvailability.AVAILABLE) {
-    } else {
-        var msg = JSON.parse(e);
-        if (msg.color) {
-            document.body.style.backgroundColor = e.color;
-        }
+        log('Chromecast available')
     }
 }
 
-function go(dir) {
-    log('go to:' + dir);
-    session.sendMessage(namespace, dir, onSuccess, onError);
+/**
+ * Launch error
+ */
+function onLaunchError() {
+    log('launch error');
 }
 
+
+/**
+ * Move
+ * @param dir String
+ */
+function go(dir) {
+    log('Go to ' + dir);
+    session.sendMessage(namespace, dir, successCallback, errorCallback);
+}
+
+/**
+ * Success
+ */
+function successCallback() {
+    log('Success');
+}
+
+/**
+ * Error
+ */
+function errorCallback() {
+    log('Error')
+}
+
+/**
+ * Keyboard shortcuts
+ * @param key
+ */
 function goFromKey(key) {
     switch (key) {
         case 'z':
@@ -94,10 +130,6 @@ function goFromKey(key) {
             go('down');
             break;
     }
-}
-
-function onLaunchError() {
-    log('launch error');
 }
 
 /**
