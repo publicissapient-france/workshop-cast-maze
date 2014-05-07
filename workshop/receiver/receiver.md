@@ -81,6 +81,12 @@ cf. méthode :
 
     game.js > handleKeypress(direction, id);
 
+### Déploiement du receiver
+
+Le receiver doit être déployé sur un serveur et être accessible par la chromecast.
+
+Pour cela, contactez un intervenant :).
+
 ### Envoi d'un message vers les senders
 
 L'application Chromecast peut également envoyer des messages aux clients.
