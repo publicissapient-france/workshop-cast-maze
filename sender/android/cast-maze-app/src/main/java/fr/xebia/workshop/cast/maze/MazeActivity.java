@@ -147,7 +147,7 @@ public class MazeActivity extends ActionBarActivity {
     // TODO Implement ResultCallback
 
 
-    // TODO Implement
+    // TODO Implement Cast.MessageReceivedCallback (GameChannel)
 
     public static int hex2Rgb(String colorStr) {
         return Color.rgb(Integer.valueOf(colorStr.substring(1, 3), 16),
