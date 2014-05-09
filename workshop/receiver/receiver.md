@@ -16,7 +16,7 @@ Ouvrez le fichier suivant dans votre IDE favori
 
     receiver/cast.js
 
-Ce fichier contiendra tout le code nécessaire pour communiquer avec la chromecast.
+Ce fichier contiendra tout le code nécessaire pour communiquer avec le chromecast.
 
 Nous allons développer un [Custom Receiver Application](https://developers.google.com/cast/docs/custom_receiver) pour gérer le labyrinthe et
 les joueurs.
@@ -31,7 +31,7 @@ Activez le mode debug dans le fichier <code>cast.js</code>
 
     window.debug = true;
 
-Indiquez un niveau de log égal à <code>NONE</code> pour la chromecast ```cast.receiver.logger.setLevelValue()```
+Indiquez un niveau de log égal à <code>NONE</code> pour le chromecast ```cast.receiver.logger.setLevelValue()```
 
 cf. [cast.receiver.LoggerLevel](https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE)
 
@@ -83,7 +83,7 @@ cf. méthode :
 
 ### Déploiement du receiver
 
-Le receiver doit être déployé sur un serveur et être accessible par la chromecast.
+Le receiver doit être déployé sur un serveur et être accessible par le chromecast.
 
 Pour cela, contactez un intervenant :).
 

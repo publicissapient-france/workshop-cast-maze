@@ -12,7 +12,7 @@ Importer le projet gradle suivant dans votre IDE favori
 
     sender/android
 
-Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur sur la chromecast.
+Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur sur le chromecast.
 
 ## Initialisation du mediaRouter
 
@@ -47,7 +47,7 @@ Dans la foulée appeler la méthode launchReceiver().
 A l'inverse dans le callback onRouteUnSelected déclencher la méthode teardown() afin de libérer les resources et réinitialiser la variable mSelectedDevice.
 
 ## Connexion au play services
-Avant de pouvoir communiquer avec la chromecast, il faut d'abord se connecter au play services. Dans la méthode launchReceiver(), utiliser le builder du [GoogleApiClient](http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html)
+Avant de pouvoir communiquer avec le chromecast, il faut d'abord se connecter au play services. Dans la méthode launchReceiver(), utiliser le builder du [GoogleApiClient](http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html)
 utiliser la méthode addApi pour ajouter la feature [Cast.API](http://developer.android.com/reference/com/google/android/gms/cast/Cast.html#API) en n'oubliant pas de passer les CastOptions suivantes:
 <pre><code class="java">Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
     .builder(mSelectedDevice, new Cast.Listener() {
