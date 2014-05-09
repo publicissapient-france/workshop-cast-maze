@@ -14,9 +14,12 @@ Browse
     http://xebia-france.github.io/workshop-cast-maze/receiver/
 
 Deploy on Chrome store
-    
-    $ grunt dist
-    $ grunt gh-pages
+
+```bash
+$ npm install
+$ grunt dist
+$ grunt gh-pages
+```
 
 ### Sender
 
