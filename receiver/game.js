@@ -107,12 +107,6 @@ function handleKeypress(direction, playerId) {
     var changeY = 0;
 
     switch (direction) {
-        case 'wall':
-
-            for (var pos in currentPlayerGrid ) {
-                pos
-            }
-            break;
         case 'left':
         {
             //left key

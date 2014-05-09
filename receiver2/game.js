@@ -110,37 +110,37 @@ function handleKeypress(direction, playerId) {
         case 'left':
         {
             //left key
-            //if (currentPlayerGrid.leftWall == false) {
+            if (currentPlayerGrid.leftWall == false) {
                 changeX = -1;
                 isMoving = true;
-            //}
+            }
             break;
         }
         case 'up':
         {
             //up key
-            //if (currentPlayerGrid.topWall == false) {
+            if (currentPlayerGrid.topWall == false) {
                 changeY = -1;
                 isMoving = true;
-            //}
+            }
             break;
         }
         case 'right':
         {
             //right key
-            //if (currentPlayerGrid.rightWall == false) {
+            if (currentPlayerGrid.rightWall == false) {
                 changeX = 1;
                 isMoving = true;
-            //}
+            }
             break;
         }
         case 'down':
         {
             //down key
-            //if (currentPlayerGrid.bottomWall == false) {
+            if (currentPlayerGrid.bottomWall == false) {
                 changeY = 1;
                 isMoving = true
-            //}
+            }
             break;
         }
         default:
