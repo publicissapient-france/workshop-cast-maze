@@ -1,5 +1,6 @@
 .gradle
-.idea/workspace.xml
+.idea/
+*.iml
 .DS_Store
 node_modules
 dist
@@ -8,3 +9,4 @@ _site
 *.pbxuser
 xcuserdata
 *.xccheckout
+*~
