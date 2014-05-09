@@ -86,6 +86,7 @@ function removePlayer(playerId) {
 
 function checkWinner(player) {
     if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
+	theMaze.pause = true;
         var winner = document.getElementById('winner');
         winner.style.display = 'block';
         document.getElementById('winner-color').style.backgroundColor = player.color;
@@ -97,6 +98,9 @@ function checkWinner(player) {
 }
 
 function handleKeypress(direction, playerId) {
+    if (theMaze.pause) {
+        return;
+    }
     var player = theMaze.players[playerId];
     if (!player) {
         return;
