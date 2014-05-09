@@ -12,14 +12,14 @@ Ouvrez le fichier suivant dans votre IDE favori
 
     sender/js/app.js
 
-Ce fichier contiendra tout le code nécessaire pour communiquer avec le serveur sur la chromecast.
+Ce fichier contiendra tout le code nécessaire pour communiquer avec le serveur sur le chromecast.
 
 ### Configuration
 
 Renseignez l'identifiant de l'application dans la variable <code>appId</code>
 
     var applicationID = '8D7FEAA1';
-Pour communiquer avec la chromecast (échanger des messages), un namespace est nécessaire,
+Pour communiquer avec le chromecast (échanger des messages), un namespace est nécessaire,
 renseigner le namespace de l'application dans la variable <code>namespace</code>
 
     var namespace = 'urn:x-cast:fr.xebia.workshop.cast.maze';
@@ -59,10 +59,10 @@ La page web s'affiche correctement et vous devriez voir le message :
     Chromecast available
     Init success
 
-### Connection à la chromecast
+### Connection au chromecast
 
 Codez la fonction <code>launchApp()</code> pour connecter
-votre navigateur à la chromecast cf. [Launch](https://developers.google.com/cast/docs/chrome_sender#Launch)
+votre navigateur au chromecast cf. [Launch](https://developers.google.com/cast/docs/chrome_sender#Launch)
 
 Affichez un message lorsque le navigateur est connecté cf. méthode <code>onRequestSessionSuccess(e)</code>
 
@@ -73,26 +73,26 @@ Retournez sur la page web :
     http://localhost:8080/sender/js/index.html
 
 Et vérifiez qu'en cliquant sur le bouton <code>Launch app</code> un nouveau joueur apparait bien sur
- l'écran connecté à la chromecast.
+ l'écran connecté au chromecast.
 
 La page web s'affiche correctement et vous devriez voir le message :
 
 ![Join messages](../img/session_requested.png)
 
-Félicitation la connection à la chromecast est réussie ! Allons
+Félicitation la connection au chromecast est réussie ! Allons
 jouer maintenant :)
 
 Si vous rafraîchissez votre navigateur vous n'allez pas demander une nouvelle session mais vous allez vous connecter automatiquement et voir apparaître les messages :
 
 ![Join messages](../img/session_join.png)
 
-### Communiquer avec la chromecast
+### Communiquer avec le chromecast
 
 Lorsque vous cliquez sur les boutons up, down, left, right la méthode <code>go(dir)</code> est appelée.
 
-Faites en sorte d'envoyer un message à la chromecast cf. [session.sendMessage](https://developers.google.com/cast/docs/reference/chrome/chrome.cast.Session#sendMessage)
+Faites en sorte d'envoyer un message au chromecast cf. [session.sendMessage](https://developers.google.com/cast/docs/reference/chrome/chrome.cast.Session#sendMessage)
 
-L'application sur la chromecast n'accepte que les messages :
+L'application sur le chromecast n'accepte que les messages :
 
     up
     down
@@ -105,7 +105,7 @@ Félicitation ! Le joueur bouge ! Finissez le labyrinthe au plus vite :).
 
 ### Récupérer la couleur du joueur côté client
 
-La chromecast peut aussi communiquer avec ses clients en utilisant des messages.
+Le chromecast peut aussi communiquer avec ses clients en utilisant des messages.
 
 Pour cela il faut s'abonner a session à un ```listener``` cf. [addMessageListener](https://developers.google.com/cast/docs/reference/chrome/chrome.cast.Session#addMessageListener)
 
@@ -122,7 +122,7 @@ Changez la couleur du fond par celle reçue :
 
 Déconnectez-vous puis reconnectez-vous à nouveau, vérifiez que la couleur du fond a bien changé.
 
-Bravo ! Vous avez réussi à recevoir des messages depuis la chromecast :).
+Bravo ! Vous avez réussi à recevoir des messages depuis le chromecast :).
 
 ### Go
 
