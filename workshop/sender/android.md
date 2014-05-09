@@ -16,7 +16,7 @@ Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur s
 
 ## Initialisation du mediaRouter
 
-Dans le onCreate() de l'activité récupérer l'instance du [MediaRouter](https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#getInstance\(android.content.Context\)).
+Dans le onCreate() de l'activité, récupérer l'instance du [MediaRouter](https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#getInstance\(android.content.Context\)).
 Ensuite créer un [MediaRouteSelector](http://developer.android.com/reference/android/support/v7/media/MediaRouteSelector.Builder.html) et via la méthode addControlCategory, ajouter la catégorie suivante:
 
 <pre><code>CastMediaControlIntent.categoryForCast(getString(R.string.app_id))</code></pre>
@@ -32,22 +32,22 @@ avec comme flag [MediaRouter.CALLBACK\_FLAG\_PERFORM\_ACTIVE\_SCAN](https://deve
 ## Prérequis
 Créer les méthodes :
 
-<pre><code>public void launchReceiver() {
+<pre><code>private void launchReceiver() {
 }
-public void teardown() {
+private void teardown() {
 }</code></pre>
 
 Nous les implémenterons un peu plus loin dans l'exercice.
 
 ## Sélection de la route
-Lorsque l'utilisateur choisit une route, le méthode onRouteSelected de votre MediaRouterCallback est appelée. Récupérer le
+Lorsque l'utilisateur choisit une route, la méthode onRouteSelected de votre MediaRouterCallback est appelée. Récupérer le
 device sélectionné grâce à :
-<pre><code class="java">mSelectedDevice = CastDevice.getFromBundle(info.getExtras());</code></pre>
+<pre><code class="java">mSelectedDevice = CastDevice.getFromBundle(route.getExtras());</code></pre>
 Dans la foulée appeler la méthode launchReceiver().
 A l'inverse dans le callback onRouteUnSelected déclencher la méthode teardown() afin de libérer les resources et réinitialiser la variable mSelectedDevice.
 
 ## Connexion au play services
-Avant de pouvoir communiquer avec la chromecast, il faut d'abord se connecter au play services. Utiliser le builder du [GoogleApiClient](http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html)
+Avant de pouvoir communiquer avec la chromecast, il faut d'abord se connecter au play services. Dans la méthode launchReceiver(), utiliser le builder du [GoogleApiClient](http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html)
 utiliser la méthode addApi pour ajouter la feature [Cast.API](http://developer.android.com/reference/com/google/android/gms/cast/Cast.html#API) en n'oubliant pas de passer les CastOptions suivantes:
 <pre><code class="java">Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
     .builder(mSelectedDevice, new Cast.Listener() {
@@ -58,7 +58,7 @@ utiliser la méthode addApi pour ajouter la feature [Cast.API](http://developer.
         }
     });</code></pre>
 
-Ajouter les listeners pour le ConnectionCallbacks et le OnConnectionFailed (une impélementation est fournie). Ensuite démarrer la connexion avec la méthode [connect](http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.html#connect\(\))
+Ajouter les listeners pour le ConnectionCallbacks et le OnConnectionFailed (une implémentation est fournie). Ensuite démarrer la connexion avec la méthode [connect](http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.html#connect\(\))
 
 ## Démarrage du receiver
 
@@ -71,7 +71,7 @@ Dans le onResult du ResultCallback, vous pouvez vérifier le statut de votre con
 précisant la couleur de notre joueur. Utiliser la méthode [Cast.CastApi.setMessageReceivedCallbacks](http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#setMessageReceivedCallbacks\(com.google.android.gms.common.api.GoogleApiClient, java.lang.String, com.google.android.gms.cast.Cast.MessageReceivedCallback\)) pour enregistrer votre channel. Le namespace de notre application est :
 <pre><code>urn:x-cast:fr.xebia.workshop.cast.maze</code></pre>
 
-Dans le onMessageReceived de votre callback, récupérer votre couleur. Pour information, un exemple de message est le suivant:
+Dans le onMessageReceived de votre callback, récupérer votre couleur. Pour information, un exemple de message est le suivant :
 <pre><code>{"color":"#0099CC"}</code></pre>
 
 Un utilitaire permettant de faire la conversion de l'hexa vers le rgb vous ait fourni. Maintenant utiliser la méthode [setBackgroundDrawable](http://developer.android.com/reference/android/view/Window.html#setBackgroundDrawable\(android.graphics.drawable.Drawable\)) de votre window pour mettre votre couleur en arrière plan.
