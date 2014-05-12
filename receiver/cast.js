@@ -22,21 +22,15 @@ $(document).ready(function () {
         window.castReceiverManager.setApplicationState("Application status is ready...");
     };
 
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    window.messageBus = window.castReceiverManager
+        .getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
 
-    /**
-     * When sender connected
-     */
     window.castReceiverManager.onSenderConnected = function (event) {
         log('Received sender connected event ' + event.data);
         var color = addPlayer(event.senderId);
         window.messageBus.send(event.senderId, JSON.stringify({color: color}));
     };
 
-    /**
-     * When sender disconnect
-     * @param event
-     */
     window.castReceiverManager.onSenderDisconnected = function (event) {
         log('Received sender disconnected event ' + event.data);
         removePlayer(event.senderId);
@@ -45,18 +39,11 @@ $(document).ready(function () {
         }
     };
 
-    /**
-     * When message received
-     * @param event object
-     */
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
         handleKeypress(event.data, event.senderId);
     };
 
-    /**
-     * Start receiver
-     */
     window.castReceiverManager.start({statusText: "Application is starting"});
     log('Receiver manager started');
 
