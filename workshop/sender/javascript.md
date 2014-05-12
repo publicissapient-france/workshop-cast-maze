@@ -39,11 +39,11 @@ Sinon affichez une erreur.
 
 La méthode <code>initializeCastApi()</code> permet d'initialiser l'API cf. [Initialization](https://developers.google.com/cast/docs/chrome_sender#Initialization)
 
-Lorsque la session est initialisée, la méthode <code>sessionListener(e)</code> est appelée cette fonction permet de sauvegarder la session dans le cas
-ou le receiver connais déjà le sender (join).
+Une fois le sender initialisé, la méthode <code>receiverListener(e)</code> permet de
+connaître l'état de la chromecast cf. [Device Selection](https://developers.google.com/cast/docs/chrome_sender#Device_selection).
 
-NB : une fois la session initialisée, la méthode <code>receiverListener(e)</code> permet de
-récupérer les messages envoyés par la chromecast.
+La méthode <code>sessionListener(e)</code> est appelée quand la session existe déjà côté receiver et que celle-ci est renvoyée au sender.
+Elle permet de sauvegarder la session dans le cas ou le receiver connais déjà le sender (join).
 
 Lancer le serveur NodeJS (racine du projet) :
 
@@ -56,6 +56,7 @@ Affichez la page web :
 
 La page web s'affiche correctement et vous devriez voir le message :
 
+    Chromecast available
     Init success
 
 ### Connection à la chromecast
@@ -65,7 +66,7 @@ votre navigateur à la chromecast cf. [Launch](https://developers.google.com/cas
 
 Affichez un message lorsque le navigateur est connecté cf. méthode <code>onRequestSessionSuccess(e)</code>
 
-Sauvegardez la session de la même façon que dans la méthode ```sessionListener```
+Sauvegardez la session dans la méthode ```onRequestSessionSuccess``` de la même façon que dans la méthode ```sessionListener```
 
 Retournez sur la page web :
 
@@ -74,15 +75,16 @@ Retournez sur la page web :
 Et vérifiez qu'en cliquant sur le bouton <code>Launch app</code> un nouveau joueur apparait bien sur
  l'écran connecté à la chromecast.
 
+La page web s'affiche correctement et vous devriez voir le message :
+
+![Join messages](../img/session_requested.png)
+
 Félicitation la connection à la chromecast est réussie ! Allons
 jouer maintenant :)
 
-Vous devriez voir le message :
+Si vous rafraîchissez votre navigateur vous n'allez pas demander une nouvelle session mais vous allez vous connecter automatiquement et voir apparaître les messages :
 
-    Join receiver, id XXX
-Ou
-
-    Session requested, id XXX
+![Join messages](../img/session_join.png)
 
 ### Communiquer avec la chromecast
 
@@ -107,6 +109,8 @@ La chromecast peut aussi communiquer avec ses clients en utilisant des messages.
 
 Pour cela il faut s'abonner a session à un ```listener``` cf. [addMessageListener](https://developers.google.com/cast/docs/reference/chrome/chrome.cast.Session#addMessageListener)
 
+Attention, vous devez gérer le cas ou vous demandez une session et le cas ou vous avez déjà une session.
+
 Essayez de récupérer la couleur du joueur après la demande de session ```onRequestSessionSuccess``` et après le join ```sessionListener```:
 
 Cela se passe dans la méthode <code>onReceiverMessage(e)</code>, coder la conversion du paramètre en JSON et la vérification de l'existence du champ <code>color</code>
@@ -114,7 +118,7 @@ Cela se passe dans la méthode <code>onReceiverMessage(e)</code>, coder la conve
     e.color
 Changez la couleur du fond par celle reçue :
 
-    document.body.style.backgroundColor = e.color;
+    document.body.style.backgroundColor = obj.color;
 
 Déconnectez-vous puis reconnectez-vous à nouveau, vérifiez que la couleur du fond a bien changé.
 
