@@ -59,7 +59,9 @@ les joueurs.</p>
 <p>Activez le mode debug dans le fichier <code>cast.js</code></p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">window.debug = true;
 </code></pre></div>
-<p>Indiquez un niveau de log égal à <code>NONE</code> cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
+<p>Indiquez un niveau de log égal à <code>NONE</code> pour la chromecast <code>cast.receiver.logger.setLevelValue()</code></p>
+
+<p>cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
 
 <p>Vous pouvez lancer à tout moment le serveur en local en exécutant le serveur node :</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">node server.js
@@ -71,7 +73,9 @@ les joueurs.</p>
 
 <h3>Initialisation</h3>
 
-<p>Récupérez une instance du <code>CastReceiverManager</code>.</p>
+<p>Récupérez une instance du <code>CastReceiverManager</code></p>
+
+<p>Utilisez <code>getInstance()</code>.</p>
 
 <p>Lancez l&#39;application cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager#start">CastReceiver</a></p>
 
@@ -104,6 +108,12 @@ d&#39;écouter les messages.</p>
 <p>cf. méthode :</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">game.js &gt; handleKeypress(direction, id);
 </code></pre></div>
+<h3>Déploiement du receiver</h3>
+
+<p>Le receiver doit être déployé sur un serveur et être accessible par la chromecast.</p>
+
+<p>Pour cela, contactez un intervenant :).</p>
+
 <h3>Envoi d&#39;un message vers les senders</h3>
 
 <p>L&#39;application Chromecast peut également envoyer des messages aux clients.</p>
