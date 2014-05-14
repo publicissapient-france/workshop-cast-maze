@@ -14,13 +14,13 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Multi-player Bomberman sample with Chromecast</title>
+    <title>Multi-player Labyrinth sample with Chromecast</title>
 </head>
 
 <body>
 <header>
     <div class="inner">
-        <h1>Multi-player Bomberman sample</h1>
+        <h1>Multi-player Labyrinth sample</h1>
 
         <h2>with Chromecast</h2>
         <a target="_blank" href="https://github.com/xebia-france/workshop-cast-maze" class="button">
@@ -46,7 +46,7 @@
 <p>Ouvrez le fichier suivant dans votre IDE favori</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">receiver/cast.js
 </code></pre></div>
-<p>Ce fichier contiendra tout le code nécessaire pour communiquer avec la chromecast.</p>
+<p>Ce fichier contiendra tout le code nécessaire pour communiquer avec le chromecast.</p>
 
 <p>Nous allons développer un <a href="https://developers.google.com/cast/docs/custom_receiver">Custom Receiver Application</a> pour gérer le labyrinthe et
 les joueurs.</p>
@@ -59,7 +59,7 @@ les joueurs.</p>
 <p>Activez le mode debug dans le fichier <code>cast.js</code></p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">window.debug = true;
 </code></pre></div>
-<p>Indiquez un niveau de log égal à <code>NONE</code> pour la chromecast <code>cast.receiver.logger.setLevelValue()</code></p>
+<p>Indiquez un niveau de log égal à <code>NONE</code> pour le chromecast <code>cast.receiver.logger.setLevelValue()</code></p>
 
 <p>cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
 
@@ -110,7 +110,7 @@ d&#39;écouter les messages.</p>
 </code></pre></div>
 <h3>Déploiement du receiver</h3>
 
-<p>Le receiver doit être déployé sur un serveur et être accessible par la chromecast.</p>
+<p>Le receiver doit être déployé sur un serveur et être accessible par le chromecast.</p>
 
 <p>Pour cela, contactez un intervenant :).</p>
 

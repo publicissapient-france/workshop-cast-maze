@@ -14,13 +14,13 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Multi-player Bomberman sample with Chromecast</title>
+    <title>Multi-player Labyrinth sample with Chromecast</title>
 </head>
 
 <body>
 <header>
     <div class="inner">
-        <h1>Multi-player Bomberman sample</h1>
+        <h1>Multi-player Labyrinth sample</h1>
 
         <h2>with Chromecast</h2>
         <a target="_blank" href="https://github.com/xebia-france/workshop-cast-maze" class="button">
@@ -48,11 +48,11 @@
 <p>Importer le projet gradle suivant dans votre IDE favori</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">sender/android
 </code></pre></div>
-<p>Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur sur la chromecast.</p>
+<p>Ce projet contiendra tout le code nécessaire pour communiquer avec le serveur sur le chromecast.</p>
 
 <h2>Initialisation du mediaRouter</h2>
 
-<p>Dans le onCreate() de l&#39;activité récupérer l&#39;instance du <a href="https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#getInstance(android.content.Context)">MediaRouter</a>.
+<p>Dans le onCreate() de l&#39;activité, récupérer l&#39;instance du <a href="https://developer.android.com/reference/android/support/v7/media/MediaRouter.html#getInstance(android.content.Context)">MediaRouter</a>.
 Ensuite créer un <a href="http://developer.android.com/reference/android/support/v7/media/MediaRouteSelector.Builder.html">MediaRouteSelector</a> et via la méthode addControlCategory, ajouter la catégorie suivante:</p>
 
 <pre><code>CastMediaControlIntent.categoryForCast(getString(R.string.app_id))</code></pre>
@@ -69,24 +69,24 @@ avec comme flag <a href="https://developer.android.com/reference/android/support
 
 <p>Créer les méthodes :</p>
 
-<pre><code>public void launchReceiver() {
+<pre><code>private void launchReceiver() {
 }
-public void teardown() {
+private void teardown() {
 }</code></pre>
 
 <p>Nous les implémenterons un peu plus loin dans l&#39;exercice.</p>
 
 <h2>Sélection de la route</h2>
 
-<p>Lorsque l&#39;utilisateur choisit une route, le méthode onRouteSelected de votre MediaRouterCallback est appelée. Récupérer le
+<p>Lorsque l&#39;utilisateur choisit une route, la méthode onRouteSelected de votre MediaRouterCallback est appelée. Récupérer le
 device sélectionné grâce à :
-<pre><code class="java">mSelectedDevice = CastDevice.getFromBundle(info.getExtras());</code></pre>
+<pre><code class="java">mSelectedDevice = CastDevice.getFromBundle(route.getExtras());</code></pre>
 Dans la foulée appeler la méthode launchReceiver().
 A l&#39;inverse dans le callback onRouteUnSelected déclencher la méthode teardown() afin de libérer les resources et réinitialiser la variable mSelectedDevice.</p>
 
 <h2>Connexion au play services</h2>
 
-<p>Avant de pouvoir communiquer avec la chromecast, il faut d&#39;abord se connecter au play services. Utiliser le builder du <a href="http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html">GoogleApiClient</a>
+<p>Avant de pouvoir communiquer avec le chromecast, il faut d&#39;abord se connecter au play services. Dans la méthode launchReceiver(), utiliser le builder du <a href="http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.Builder.html">GoogleApiClient</a>
 utiliser la méthode addApi pour ajouter la feature <a href="http://developer.android.com/reference/com/google/android/gms/cast/Cast.html#API">Cast.API</a> en n&#39;oubliant pas de passer les CastOptions suivantes:
 <pre><code class="java">Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
     .builder(mSelectedDevice, new Cast.Listener() {
@@ -97,7 +97,7 @@ utiliser la méthode addApi pour ajouter la feature <a href="http://developer.an
         }
     });</code></pre></p>
 
-<p>Ajouter les listeners pour le ConnectionCallbacks et le OnConnectionFailed (une impélementation est fournie). Ensuite démarrer la connexion avec la méthode <a href="http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.html#connect()">connect</a></p>
+<p>Ajouter les listeners pour le ConnectionCallbacks et le OnConnectionFailed (une implémentation est fournie). Ensuite démarrer la connexion avec la méthode <a href="http://developer.android.com/reference/com/google/android/gms/common/api/GoogleApiClient.html#connect()">connect</a></p>
 
 <h2>Démarrage du receiver</h2>
 
@@ -110,7 +110,7 @@ Utiliser la méthode <a href="http://developer.android.com/reference/com/google/
 précisant la couleur de notre joueur. Utiliser la méthode <a href="http://developer.android.com/reference/com/google/android/gms/cast/Cast.CastApi.html#setMessageReceivedCallbacks(com.google.android.gms.common.api.GoogleApiClient,%20java.lang.String,%20com.google.android.gms.cast.Cast.MessageReceivedCallback)">Cast.CastApi.setMessageReceivedCallbacks</a> pour enregistrer votre channel. Le namespace de notre application est :
 <pre><code>urn:x-cast:fr.xebia.workshop.cast.maze</code></pre></p>
 
-<p>Dans le onMessageReceived de votre callback, récupérer votre couleur. Pour information, un exemple de message est le suivant:
+<p>Dans le onMessageReceived de votre callback, récupérer votre couleur. Pour information, un exemple de message est le suivant :
 <pre><code>{&quot;color&quot;:&quot;#0099CC&quot;}</code></pre></p>
 
 <p>Un utilitaire permettant de faire la conversion de l&#39;hexa vers le rgb vous ait fourni. Maintenant utiliser la méthode <a href="http://developer.android.com/reference/android/view/Window.html#setBackgroundDrawable(android.graphics.drawable.Drawable)">setBackgroundDrawable</a> de votre window pour mettre votre couleur en arrière plan.</p>
