@@ -83,9 +83,25 @@ cf. méthode :
 
 ### Déploiement du receiver
 
-Le receiver doit être déployé sur un serveur et être accessible par le chromecast.
+Pour déployer le receiver allez à cette adresse : [https://cast.google.com/publish](https://cast.google.com/publish). L'inscription vous coûtera 5$ afin de pouvoir déployer des applications.
+Une fois votre inscription terminée vous arriverez sur cet écran :
 
-Pour cela, contactez un intervenant :).
+![Step 1]({{ site.url }}/img/receiver-step-1.png)
+
+Cliquez sur le bouton "Add new application" puis choisissez l'option "CustomReceiver".
+![Step 2]({{ site.url }}/img/receiver-step-2.png)
+
+Maintenant vous êtes sur la page détails de votre application. 2 informations essentielles doivent être remplies:
+
+1. Le titre de votre application
+2. L'url où elle est accessible
+
+![Step 3]({{ site.url }}/img/receiver-step-3.png)
+
+
+  
+Cliquez sur le bouton "publish" et sauvegardez vos modifications.
+
 
 ### Envoi d'un message vers les senders
 
