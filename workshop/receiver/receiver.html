@@ -14,13 +14,13 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Multi-player Labyrinth sample with Chromecast</title>
+    <title>Multi-player Bomberman sample with Chromecast</title>
 </head>
 
 <body>
 <header>
     <div class="inner">
-        <h1>Multi-player Labyrinth sample</h1>
+        <h1>Multi-player Bomberman sample</h1>
 
         <h2>with Chromecast</h2>
         <a target="_blank" href="https://github.com/xebia-france/workshop-cast-maze" class="button">
@@ -46,7 +46,7 @@
 <p>Ouvrez le fichier suivant dans votre IDE favori</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">receiver/cast.js
 </code></pre></div>
-<p>Ce fichier contiendra tout le code nécessaire pour communiquer avec le chromecast.</p>
+<p>Ce fichier contiendra tout le code nécessaire pour communiquer avec la chromecast.</p>
 
 <p>Nous allons développer un <a href="https://developers.google.com/cast/docs/custom_receiver">Custom Receiver Application</a> pour gérer le labyrinthe et
 les joueurs.</p>
@@ -59,9 +59,7 @@ les joueurs.</p>
 <p>Activez le mode debug dans le fichier <code>cast.js</code></p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">window.debug = true;
 </code></pre></div>
-<p>Indiquez un niveau de log égal à <code>NONE</code> pour le chromecast <code>cast.receiver.logger.setLevelValue()</code></p>
-
-<p>cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
+<p>Indiquez un niveau de log égal à <code>NONE</code> cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.LoggerLevel#.NONE">cast.receiver.LoggerLevel</a></p>
 
 <p>Vous pouvez lancer à tout moment le serveur en local en exécutant le serveur node :</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">node server.js
@@ -73,9 +71,7 @@ les joueurs.</p>
 
 <h3>Initialisation</h3>
 
-<p>Récupérez une instance du <code>CastReceiverManager</code></p>
-
-<p>Utilisez <code>getInstance()</code>.</p>
+<p>Récupérez une instance du <code>CastReceiverManager</code>.</p>
 
 <p>Lancez l&#39;application cf. <a href="https://developers.google.com/cast/docs/reference/receiver/cast.receiver.CastReceiverManager#start">CastReceiver</a></p>
 
@@ -108,12 +104,6 @@ d&#39;écouter les messages.</p>
 <p>cf. méthode :</p>
 <div class="highlight"><pre><code class="text language-text" data-lang="text">game.js &gt; handleKeypress(direction, id);
 </code></pre></div>
-<h3>Déploiement du receiver</h3>
-
-<p>Le receiver doit être déployé sur un serveur et être accessible par le chromecast.</p>
-
-<p>Pour cela, contactez un intervenant :).</p>
-
 <h3>Envoi d&#39;un message vers les senders</h3>
 
 <p>L&#39;application Chromecast peut également envoyer des messages aux clients.</p>
