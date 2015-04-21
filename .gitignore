@@ -7,4 +7,6 @@ dist
 _site
 *.pbxuser
 xcuserdata
-*.xccheckout
+*.xccheckout.idea/
+*.iml
+.idea
