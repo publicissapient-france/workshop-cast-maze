@@ -119,15 +119,27 @@ function checkWinner(player) {
     if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
         player.win++;
         theMaze.pause = true;
-        var winner = document.getElementById('winner');
-        winner.style.display = 'block';
+        document.getElementById('winner').style.display = 'block';
         document.getElementById('winner-color').style.backgroundColor = player.color;
         updateLeaderBoard();
-        setTimeout(function () {
-            winner.style.display = 'none';
-            newMaze();
-        }, 10000);
+        launchCountdown();
     }
+}
+
+function launchCountdown() {
+    var countdown = 10;
+    var countdownTime = document.getElementById('countdown-time');
+    countdownTime.innerHTML = countdown;
+    var countdownCounter = function () {
+        if (countdown === 1) {
+            document.getElementById('winner').style.display = 'none';
+            newMaze();
+        } else {
+            countdownTime.innerHTML = --countdown;
+            setTimeout(countdownCounter, 1000);
+        }
+    };
+    setTimeout(countdownCounter, 1000);
 }
 
 function handleKeypress(direction, playerId) {
