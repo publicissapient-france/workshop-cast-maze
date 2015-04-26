@@ -45,12 +45,61 @@
             border-radius: 3px;
             margin: 30px auto;
         }
+
+        .leader-board {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 25%;
+            height: 100%;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .lb-player-color {
+            height: 20px;
+            width: 20px;
+            border-radius: 20px;
+            background-color: black;
+            float: left;
+        }
+
+        .lb-player {
+
+        }
+
+        .lb-list {
+            list-style: none;
+        }
+
+        .lb-player-position {
+            font-size: 25px;
+            margin-left: 30px;
+        }
     </style>
 </head>
 <body>
 
 <div id="maze-container">
     <canvas oncontextmenu="return false;" id="maze" width="750" height="750"></canvas>
+</div>
+
+<div class="leader-board">
+    <h1>Leader Board</h1>
+    <ul class="lb-list">
+        <li class="lb-player">
+            <div id="first_victory_color" class="lb-player-color"></div>
+            <div class="lb-player-position">1 - <span id="first_victory_count">0</span> victory(ies)</div>
+        </li>
+        <li class="lb-player">
+            <div id="second_victory_color" class="lb-player-color"></div>
+            <div class="lb-player-position">2 - <span id="second_victory_count">0</span> victory(ies)</div>
+        </li>
+        <li class="lb-player">
+            <div id="third_victory_color" class="lb-player-color"></div>
+            <div class="lb-player-position">3 - <span id="third_victory_count">0</span> victory(ies)</div>
+        </li>
+    </ul>
 </div>
 
 <div id="debug"></div>
@@ -62,10 +111,11 @@
     You win!
     <br/>
     <br/>
-    New game in 10 secondes :)
+    New game in <span id="countdown-time"></span> secondes :)
 </div>
 
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+<script type="text/javascript" src="lodash.min.js"></script>
 <script type="text/javascript" src="jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="game.js"></script>
 <script type="text/javascript" src="cast.js"></script>
