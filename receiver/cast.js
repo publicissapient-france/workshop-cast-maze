@@ -34,9 +34,6 @@ $(document).ready(function () {
     window.castReceiverManager.onSenderDisconnected = function (event) {
         log('Received sender disconnected event ' + event.data);
         removePlayer(event.senderId);
-        if (window.castReceiverManager.getSenders().length == 0) {
-            window.close();
-        }
     };
 
     window.messageBus.onMessage = function (event) {
