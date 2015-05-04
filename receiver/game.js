@@ -81,8 +81,8 @@ function handleMessage(action, playerId) {
 function addPlayer(playerId) {
     var color = colors[theMaze.playersCount % colors.length];
     theMaze.players[playerId] = {
-        x: theMaze.startColumn,
-        y: theMaze.startRow,
+        x: theMaze.endColumn-1,
+        y: theMaze.endRow,
         color: color,
         win: 0
     };
