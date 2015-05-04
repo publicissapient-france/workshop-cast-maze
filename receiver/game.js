@@ -7,12 +7,12 @@ var colors = ['#0099CC', '#9933CC', '#669900', '#FF8A00', '#CC0000', '#33B5E5', 
 var ui = {};
 
 function bindUi() {
-    ui.firstColor = $('#first_victory_color');
-    ui.firstWin = $('#first_victory_win');
-    ui.secondColor = $('#second_victory_color');
-    ui.secondWin = $('#second_victory_win');
-    ui.thirdColor = $('#third_victory_color');
-    ui.thirdWin = $('#third_victory_win');
+    ui.firstColor = $('#first-victory-color');
+    ui.firstWin = $('#first-victory-count');
+    ui.secondColor = $('#second-victory-color');
+    ui.secondWin = $('#second-victory-count');
+    ui.thirdColor = $('#third-victory-color');
+    ui.thirdWin = $('#third-victory-count');
 }
 
 function newMaze() {
@@ -27,14 +27,19 @@ function newMaze() {
     canvas = document.getElementById('maze');
     context = canvas.getContext('2d');
     context.font = "bold 20px sans-serif";
-    $(document).keydown(handleKeypress);
 
     makeMaze();
 
-    for (var id in players) {
-        addPlayer(id);
-    }
+    theMaze.players = players;
+
+    _.forEach(theMaze.players, function (player) {
+        player.x = 0;
+        player.y = 0;
+    });
+
+    theMaze.drawPlayers();
 }
+
 $(document).ready(function () {
     newMaze();
 });
@@ -69,55 +74,54 @@ function makeMaze() {
     theMaze = new maze(rows, columns, gridsize, mazeStyle, startColumn, startRow, endColumn, endRow, wallColor, backgroundColor, solutionColor);
     theMaze.generate();
     theMaze.draw();
-}
-
-function handleMessage(action, playerId) {
-    var player = theMaze.players[playerId];
-    if (player) {
-        handleKeypress(action, player);
-    }
+    theMaze.players = [];
 }
 
 function addPlayer(playerId) {
-    var color = colors[theMaze.playersCount % colors.length];
-    theMaze.players[playerId] = {
-        x: theMaze.startColumn,
-        y: theMaze.startRow,
+    var color = colors[theMaze.players.length % colors.length];
+    theMaze.players.push({
+        id: playerId,
+        x: 0,
+        y: 0,
         color: color,
         win: 0
-    };
-    theMaze.playersCount++;
+    });
     theMaze.drawPlayers();
     return color;
 }
 
 function removePlayer(playerId) {
-    theMaze.players[playerId] = undefined;
-    // TODO: clear maze
+    var i = _.findIndex(theMaze.players, function (player) {
+        return player.id === playerId;
+    });
+    if (i > -1) {
+        theMaze.players.splice(i, 1);
+    }
+
 }
 
 function updateLeaderBoard() {
     if (theMaze.players.length > 0) {
         var sortedPlayers = _.sortBy(theMaze.players, function (player) {
-            return player.win;
+            return -player.win;
         });
-        ui.firstColor.backgroundColor(sortedPlayers[0].color);
-        ui.firstWin.backgroundColor(sortedPlayers[0].win);
+        ui.firstColor.css('background-color', sortedPlayers[0].color);
+        ui.firstWin.html(sortedPlayers[0].win);
         var length = sortedPlayers.length;
         if (length > 1) {
-            ui.secondColor.backgroundColor(sortedPlayers[1].color);
-            ui.secondWin.backgroundColor(sortedPlayers[1].win);
+            ui.secondColor.css('background-color', sortedPlayers[1].color);
+            ui.secondWin.html(sortedPlayers[1].win);
         }
         if (length > 2) {
-            ui.thirdColor.backgroundColor(sortedPlayers[2].color);
-            ui.firstWin.backgroundColor(sortedPlayers[2].win);
+            ui.thirdColor.css('background-color', sortedPlayers[2].color);
+            ui.firstWin.html(sortedPlayers[2].win);
         }
     }
 }
 
 function checkWinner(player) {
     if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
-        player.win++;
+        player.win += 1;
         theMaze.pause = true;
         document.getElementById('winner').style.display = 'block';
         document.getElementById('winner-color').style.backgroundColor = player.color;
@@ -146,7 +150,9 @@ function handleKeypress(direction, playerId) {
     if (theMaze.pause) {
         return;
     }
-    var player = theMaze.players[playerId];
+    var player = _.find(theMaze.players, function (player) {
+        return player.id === playerId;
+    });
     if (!player) {
         return;
     }
@@ -220,7 +226,7 @@ function maze(rows, columns, gridsize, mazeStyle, startColumn, startRow, endColu
     this.startColumn = parseInt(startColumn);
     this.startRow = parseInt(startRow);
     this.players = [];
-    this.playersCount = 0;
+    //this.playersCount = 0;
     this.endColumn = parseInt(endColumn);
     this.endRow = parseInt(endRow);
     this.wallColor = wallColor;
@@ -604,16 +610,16 @@ maze.prototype.redrawCell = function (theCell) {
 };
 
 maze.prototype.drawPlayers = function () {
-    for (var id in theMaze.players) {
-        var player = theMaze.players[id];
-        var drawX = player.x * this.gridsize + (this.gridsize / 2);
-        var drawY = player.y * this.gridsize + (this.gridsize / 2);
+    var that = this;
+    _.forEach(theMaze.players, function (player) {
+        var drawX = player.x * that.gridsize + (that.gridsize / 2);
+        var drawY = player.y * that.gridsize + (that.gridsize / 2);
         context.fillStyle = player.color;
         context.beginPath();
-        context.arc(drawX, drawY, (this.gridsize / 4), 0, Math.PI * 2, true);
+        context.arc(drawX, drawY, (that.gridsize / 4), 0, Math.PI * 2, true);
         context.closePath();
         context.fill();
-    }
+    });
 };
 
 function cell(column, row, partOfMaze, isStart, isEnd, isGenStart) {
