@@ -97,20 +97,26 @@ function removePlayer(playerId) {
 }
 
 function updateLeaderBoard() {
+    ui.firstWin.html(1);
     if (theMaze.players.length > 0) {
+        ui.firstWin.html(2);
         var sortedPlayers = _.sortBy(theMaze.players, function (player) {
             return -player.win;
         });
+        ui.firstWin.html(3);
         ui.firstColor.css('background-color', sortedPlayers[0].color);
         ui.firstWin.html(sortedPlayers[0].win);
+        ui.firstWin.html(4);
         var length = sortedPlayers.length;
         if (length > 1) {
             ui.secondColor.css('background-color', sortedPlayers[1].color);
             ui.secondWin.html(sortedPlayers[1].win);
+            ui.firstWin.html(5);
         }
         if (length > 2) {
             ui.thirdColor.css('background-color', sortedPlayers[2].color);
             ui.firstWin.html(sortedPlayers[2].win);
+            ui.firstWin.html(6);
         }
     }
 }
