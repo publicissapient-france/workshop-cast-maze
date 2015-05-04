@@ -97,7 +97,7 @@ function removePlayer(playerId) {
 }
 
 function updateLeaderBoard() {
-    ui.firstWin.html(1);
+    ui.firstWin.html(theMaze.players.length);
     if (theMaze.players.length > 0) {
         ui.firstWin.html(2);
         var sortedPlayers = _.sortBy(theMaze.players, function (player) {
