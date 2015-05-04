@@ -146,10 +146,13 @@ function launchCountdown() {
     setTimeout(countdownCounter, 1000);
 }
 
-function handleKeypress(direction, player) {
+function handleKeypress(direction, playerId) {
     if (theMaze.pause) {
         return;
     }
+    var player = _.find(theMaze.players, function (player) {
+        return player.id === playerId;
+    });
     if (!player) {
         return;
     }
