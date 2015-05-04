@@ -4,8 +4,19 @@ var theMaze = null;
 var colors = ['#0099CC', '#9933CC', '#669900', '#FF8A00', '#CC0000', '#33B5E5', '#AA66CC', '#99CC00', '#FFBB33', '#FF4444', '#A8DFF4',
     '#DDBCEE', '#D3E992', '#FFE3A0', '#FFCACA', '#00008B', '#008B8B', '#B8860B', '#A9A9A9', '#006400', '#BDB76B', '#8B008B', '#556B2F',
     '#FF8C00', '#8B0000', '#E9967A', '#8FBC8F'];
+var ui = {};
+
+function bindUi() {
+    ui.firstColor = $('#first_victory_color');
+    ui.firstWin = $('#first_victory_win');
+    ui.secondColor = $('#second_victory_color');
+    ui.secondWin = $('#second_victory_win');
+    ui.thirdColor = $('#third_victory_color');
+    ui.thirdWin = $('#third_victory_win');
+}
 
 function newMaze() {
+    bindUi();
     var players = [];
     if (theMaze) {
         players = theMaze.players;
@@ -72,7 +83,8 @@ function addPlayer(playerId) {
     theMaze.players[playerId] = {
         x: theMaze.startColumn,
         y: theMaze.startRow,
-        color: color
+        color: color,
+        win: 0
     };
     theMaze.playersCount++;
     theMaze.drawPlayers();
@@ -84,19 +96,56 @@ function removePlayer(playerId) {
     // TODO: clear maze
 }
 
-function checkWinner(player) {
-    if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
-        var winner = document.getElementById('winner');
-        winner.style.display = 'block';
-        document.getElementById('winner-color').style.backgroundColor = player.color;
-        setTimeout(function () {
-            winner.style.display = 'none';
-            newMaze();
-        }, 10000);
+function updateLeaderBoard() {
+    if (theMaze.players.length > 0) {
+        var sortedPlayers = _.sortBy(theMaze.players, function (player) {
+            return player.win;
+        });
+        ui.firstColor.backgroundColor(sortedPlayers[0].color);
+        ui.firstWin.backgroundColor(sortedPlayers[0].win);
+        var length = sortedPlayers.length;
+        if (length > 1) {
+            ui.secondColor.backgroundColor(sortedPlayers[1].color);
+            ui.secondWin.backgroundColor(sortedPlayers[1].win);
+        }
+        if (length > 2) {
+            ui.thirdColor.backgroundColor(sortedPlayers[2].color);
+            ui.firstWin.backgroundColor(sortedPlayers[2].win);
+        }
     }
 }
 
+function checkWinner(player) {
+    if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
+        player.win++;
+        theMaze.pause = true;
+        document.getElementById('winner').style.display = 'block';
+        document.getElementById('winner-color').style.backgroundColor = player.color;
+        updateLeaderBoard();
+        launchCountdown();
+    }
+}
+
+function launchCountdown() {
+    var countdown = 10;
+    var countdownTime = document.getElementById('countdown-time');
+    countdownTime.innerHTML = countdown;
+    var countdownCounter = function () {
+        if (countdown === 1) {
+            document.getElementById('winner').style.display = 'none';
+            newMaze();
+        } else {
+            countdownTime.innerHTML = --countdown;
+            setTimeout(countdownCounter, 1000);
+        }
+    };
+    setTimeout(countdownCounter, 1000);
+}
+
 function handleKeypress(direction, playerId) {
+    if (theMaze.pause) {
+        return;
+    }
     var player = theMaze.players[playerId];
     if (!player) {
         return;
