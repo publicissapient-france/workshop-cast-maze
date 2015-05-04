@@ -77,15 +77,6 @@ function makeMaze() {
     theMaze.players = [];
 }
 
-function handleMessage(action, playerId) {
-    var player = _.find(theMaze.players, function (player) {
-        return player.id === playerId;
-    });
-    if (player) {
-        handleKeypress(action, player);
-    }
-}
-
 function addPlayer(playerId) {
     var color = colors[theMaze.players.length % colors.length];
     theMaze.players.push({
@@ -95,7 +86,6 @@ function addPlayer(playerId) {
         color: color,
         win: 0
     });
-    //theMaze.playersCount++;
     theMaze.drawPlayers();
     return color;
 }
@@ -156,10 +146,13 @@ function launchCountdown() {
     setTimeout(countdownCounter, 1000);
 }
 
-function handleKeypress(direction, player) {
+function handleKeypress(direction, playerId) {
     if (theMaze.pause) {
         return;
     }
+    var player = _.find(theMaze.players, function (player) {
+        return player.id === playerId;
+    });
     if (!player) {
         return;
     }
