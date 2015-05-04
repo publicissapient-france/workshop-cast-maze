@@ -37,7 +37,9 @@ function newMaze() {
         player.y = 0;
     });
 
-    theMaze.drawPlayers();
+    setInterval(function () {
+        theMaze.drawPlayers();
+    }, 100)
 }
 
 $(document).ready(function () {
@@ -86,7 +88,6 @@ function addPlayer(playerId) {
         color: color,
         win: 0
     });
-    theMaze.drawPlayers();
     return color;
 }
 
@@ -95,9 +96,10 @@ function removePlayer(playerId) {
         return player.id === playerId;
     });
     if (i > -1) {
+        var player = theMaze.players[i];
+        theMaze.redrawCell(theMaze.grid[player.x][player.y]);
         theMaze.players.splice(i, 1);
     }
-
 }
 
 function updateLeaderBoard() {
@@ -208,7 +210,6 @@ function handleKeypress(direction, playerId) {
         theMaze.redrawCell(theMaze.grid[player.x][player.y]);
         player.x += changeX;
         player.y += changeY;
-        theMaze.drawPlayers();
         checkWinner(player);
     }
 };
@@ -560,7 +561,6 @@ maze.prototype.draw = function () {
 
         }
     }
-    this.drawPlayers();
 };
 
 maze.prototype.redrawCell = function (theCell) {
