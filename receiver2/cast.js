@@ -12,9 +12,9 @@ function checkDebug() {
 
 $(document).ready(function () {
 
-    cast.receiver.logger.setLevelValue(0);
+    // TODO log level
 
-    window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+    window.castReceiverManager = {}; // TODO get CastReceiverManager
     log('Starting receiver manager');
 
     window.castReceiverManager.onReady = function (event) {
@@ -22,16 +22,12 @@ $(document).ready(function () {
         window.castReceiverManager.setApplicationState("Application status is ready...");
     };
 
-    window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:fr.xebia.workshop.cast.maze');
+    window.messageBus = {} // TODO get CastMessageBus
 
     /**
      * When sender connected
      */
-    window.castReceiverManager.onSenderConnected = function (event) {
-        log('Received sender connected event ' + event.data);
-        var color = addPlayer(event.senderId);
-        window.messageBus.send(event.senderId, JSON.stringify({color: color}));
-    };
+    // TODO onSenderConnected call addPlayer(<id>)
 
     /**
      * When sender disconnect
@@ -51,13 +47,13 @@ $(document).ready(function () {
      */
     window.messageBus.onMessage = function (event) {
         log('Message [' + event.senderId + '] ' + event.data);
-        handleKeypress(event.data, event.senderId);
+        // TODO call method to move player with direction
     };
 
     /**
      * Start receiver
      */
-    window.castReceiverManager.start({statusText: "Application is starting"});
+    // TODO start CastReceiverManager
     log('Receiver manager started');
 
     /**
