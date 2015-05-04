@@ -37,7 +37,9 @@ function newMaze() {
         player.y = 0;
     });
 
-    theMaze.drawPlayers();
+    setInterval(function () {
+        theMaze.drawPlayers();
+    }, 200)
 }
 
 $(document).ready(function () {
@@ -86,7 +88,7 @@ function addPlayer(playerId) {
         color: color,
         win: 0
     });
-    theMaze.drawPlayers();
+    //theMaze.drawPlayers();
     return color;
 }
 
@@ -208,7 +210,7 @@ function handleKeypress(direction, playerId) {
         theMaze.redrawCell(theMaze.grid[player.x][player.y]);
         player.x += changeX;
         player.y += changeY;
-        theMaze.drawPlayers();
+        //theMaze.drawPlayers();
         checkWinner(player);
     }
 };
@@ -560,7 +562,7 @@ maze.prototype.draw = function () {
 
         }
     }
-    this.drawPlayers();
+    //this.drawPlayers();
 };
 
 maze.prototype.redrawCell = function (theCell) {
