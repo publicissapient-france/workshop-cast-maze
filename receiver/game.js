@@ -7,12 +7,12 @@ var colors = ['#0099CC', '#9933CC', '#669900', '#FF8A00', '#CC0000', '#33B5E5', 
 var ui = {};
 
 function bindUi() {
-    ui.firstColor = $('#first_victory_color');
-    ui.firstWin = $('#first_victory_win');
-    ui.secondColor = $('#second_victory_color');
-    ui.secondWin = $('#second_victory_win');
-    ui.thirdColor = $('#third_victory_color');
-    ui.thirdWin = $('#third_victory_win');
+    ui.firstColor = $('#first-victory-color');
+    ui.firstWin = $('#first-victory-count');
+    ui.secondColor = $('#second-victory-color');
+    ui.secondWin = $('#second-victory-count');
+    ui.thirdColor = $('#third-victory-color');
+    ui.thirdWin = $('#third-victory-count');
 }
 
 function newMaze() {
@@ -99,31 +99,31 @@ function removePlayer(playerId) {
 function updateLeaderBoard() {
     if (theMaze.players.length > 0) {
         var sortedPlayers = _.sortBy(theMaze.players, function (player) {
-            return player.win;
+            return -player.win;
         });
-        ui.firstColor.backgroundColor(sortedPlayers[0].color);
-        ui.firstWin.backgroundColor(sortedPlayers[0].win);
+        ui.firstColor.css('background-color', sortedPlayers[0].color);
+        ui.firstWin.html(sortedPlayers[0].win);
         var length = sortedPlayers.length;
         if (length > 1) {
-            ui.secondColor.backgroundColor(sortedPlayers[1].color);
-            ui.secondWin.backgroundColor(sortedPlayers[1].win);
+            ui.secondColor.css('background-color', sortedPlayers[1].color);
+            ui.secondWin.html(sortedPlayers[1].win);
         }
         if (length > 2) {
-            ui.thirdColor.backgroundColor(sortedPlayers[2].color);
-            ui.firstWin.backgroundColor(sortedPlayers[2].win);
+            ui.thirdColor.css('background-color', sortedPlayers[2].color);
+            ui.firstWin.html(sortedPlayers[2].win);
         }
     }
 }
 
 function checkWinner(player) {
-    if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
-        player.win++;
-        theMaze.pause = true;
-        document.getElementById('winner').style.display = 'block';
-        document.getElementById('winner-color').style.backgroundColor = player.color;
-        updateLeaderBoard();
-        launchCountdown();
-    }
+    //if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
+    player.win++;
+    theMaze.pause = true;
+    document.getElementById('winner').style.display = 'block';
+    document.getElementById('winner-color').style.backgroundColor = player.color;
+    updateLeaderBoard();
+    launchCountdown();
+    //}
 }
 
 function launchCountdown() {
