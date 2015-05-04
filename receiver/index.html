@@ -27,7 +27,7 @@
             padding: 50px;
             position: absolute;
             display: none;
-            height: 250px;
+            height: 420px;
             width: 300px;
             top: 0;
             text-align: center;
@@ -47,13 +47,7 @@
         }
 
         .leader-board {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 25%;
-            height: 100%;
             padding: 10px;
-            overflow: hidden;
         }
 
         .lb-player-color {
@@ -73,7 +67,7 @@
         }
 
         .lb-player-position {
-            font-size: 25px;
+            height: 30px;
             margin-left: 30px;
         }
     </style>
@@ -84,34 +78,33 @@
     <canvas oncontextmenu="return false;" id="maze" width="750" height="750"></canvas>
 </div>
 
-<div class="leader-board">
-    <h1>Leader Board</h1>
-    <ul class="lb-list">
-        <li class="lb-player">
-            <div id="first_victory_color" class="lb-player-color"></div>
-            <div class="lb-player-position">1 - <span id="first_victory_count">0</span> victory(ies)</div>
-        </li>
-        <li class="lb-player">
-            <div id="second_victory_color" class="lb-player-color"></div>
-            <div class="lb-player-position">2 - <span id="second_victory_count">0</span> victory(ies)</div>
-        </li>
-        <li class="lb-player">
-            <div id="third_victory_color" class="lb-player-color"></div>
-            <div class="lb-player-position">3 - <span id="third_victory_count">0</span> victory(ies)</div>
-        </li>
-    </ul>
-</div>
-
 <div id="debug"></div>
 
 <div id="winner">
-    Congratulation
+    <h1>Congratulation</h1>
     <div id="winner-color"></div>
     <br/>
     You win!
     <br/>
     <br/>
     New game in <span id="countdown-time"></span> seconds :)
+    <div class="leader-board">
+        <h2>Leader Board</h2>
+        <ul class="lb-list">
+            <li class="lb-player">
+                <div id="first_victory_color" class="lb-player-color"></div>
+                <div class="lb-player-position">1 - <span id="first_victory_count">0</span> victory(ies)</div>
+            </li>
+            <li class="lb-player">
+                <div id="second_victory_color" class="lb-player-color"></div>
+                <div class="lb-player-position">2 - <span id="second_victory_count">0</span> victory(ies)</div>
+            </li>
+            <li class="lb-player">
+                <div id="third_victory_color" class="lb-player-color"></div>
+                <div class="lb-player-position">3 - <span id="third_victory_count">0</span> victory(ies)</div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
