@@ -116,14 +116,14 @@ function updateLeaderBoard() {
 }
 
 function checkWinner(player) {
-    //if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
-    player.win++;
-    theMaze.pause = true;
-    document.getElementById('winner').style.display = 'block';
-    document.getElementById('winner-color').style.backgroundColor = player.color;
-    updateLeaderBoard();
-    launchCountdown();
-    //}
+    if (player.x == theMaze.endColumn && player.y == theMaze.endRow) {
+        player.win++;
+        theMaze.pause = true;
+        document.getElementById('winner').style.display = 'block';
+        document.getElementById('winner-color').style.backgroundColor = player.color;
+        updateLeaderBoard();
+        launchCountdown();
+    }
 }
 
 function launchCountdown() {
