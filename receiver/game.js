@@ -27,7 +27,6 @@ function newMaze() {
     canvas = document.getElementById('maze');
     context = canvas.getContext('2d');
     context.font = "bold 20px sans-serif";
-    $(document).keydown(handleKeypress);
 
     makeMaze();
 
